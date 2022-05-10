@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ @Author: wangyihan
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.tabstudio.gridmanagementsystem.mapper.EventsMapper">
+  <resultMap id="BaseResultMap" type="club.tabstudio.gridmanagementsystem.model.Events">
+    <!--@mbg.generated-->
+    <!--@Table events-->
+    <id column="event_id" jdbcType="VARCHAR" property="eventId" />
+    <result column="event_area_id" jdbcType="INTEGER" property="eventAreaId" />
+    <result column="event_desc" jdbcType="VARCHAR" property="eventDesc" />
+    <result column="event_position" jdbcType="VARCHAR" property="eventPosition" />
+    <result column="event_address" jdbcType="VARCHAR" property="eventAddress" />
+    <result column="event_status" jdbcType="INTEGER" property="eventStatus" />
+    <result column="event_area_admin_id" jdbcType="INTEGER" property="eventAreaAdminId" />
+    <result column="event_user_evaluation" jdbcType="VARCHAR" property="eventUserEvaluation" />
+    <result column="event_user_score" jdbcType="DOUBLE" property="eventUserScore" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="accepted_at" jdbcType="TIMESTAMP" property="acceptedAt" />
+    <result column="completed_at" jdbcType="TIMESTAMP" property="completedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    event_id, event_area_id, event_desc, event_position, event_address, event_status, 
+    event_area_admin_id, event_user_evaluation, event_user_score, created_at, accepted_at, 
+    completed_at
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from events
+    where event_id = #{eventId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from events
+    where event_id = #{eventId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="club.tabstudio.gridmanagementsystem.model.Events">
+    <!--@mbg.generated-->
+    insert into events (event_id, event_area_id, event_desc, 
+      event_position, event_address, event_status, 
+      event_area_admin_id, event_user_evaluation, 
+      event_user_score, created_at, accepted_at, 
+      completed_at)
+    values (#{eventId,jdbcType=VARCHAR}, #{eventAreaId,jdbcType=INTEGER}, #{eventDesc,jdbcType=VARCHAR}, 
+      #{eventPosition,jdbcType=VARCHAR}, #{eventAddress,jdbcType=VARCHAR}, #{eventStatus,jdbcType=INTEGER}, 
+      #{eventAreaAdminId,jdbcType=INTEGER}, #{eventUserEvaluation,jdbcType=VARCHAR}, 
+      #{eventUserScore,jdbcType=DOUBLE}, #{createdAt,jdbcType=TIMESTAMP}, #{acceptedAt,jdbcType=TIMESTAMP}, 
+      #{completedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="club.tabstudio.gridmanagementsystem.model.Events">
+    <!--@mbg.generated-->
+    insert into events
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="eventId != null">
+        event_id,
+      </if>
+      <if test="eventAreaId != null">
+        event_area_id,
+      </if>
+      <if test="eventDesc != null">
+        event_desc,
+      </if>
+      <if test="eventPosition != null">
+        event_position,
+      </if>
+      <if test="eventAddress != null">
+        event_address,
+      </if>
+      <if test="eventStatus != null">
+        event_status,
+      </if>
+      <if test="eventAreaAdminId != null">
+        event_area_admin_id,
+      </if>
+      <if test="eventUserEvaluation != null">
+        event_user_evaluation,
+      </if>
+      <if test="eventUserScore != null">
+        event_user_score,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="acceptedAt != null">
+        accepted_at,
+      </if>
+      <if test="completedAt != null">
+        completed_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="eventId != null">
+        #{eventId,jdbcType=VARCHAR},
+      </if>
+      <if test="eventAreaId != null">
+        #{eventAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="eventDesc != null">
+        #{eventDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="eventPosition != null">
+        #{eventPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="eventAddress != null">
+        #{eventAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="eventStatus != null">
+        #{eventStatus,jdbcType=INTEGER},
+      </if>
+      <if test="eventAreaAdminId != null">
+        #{eventAreaAdminId,jdbcType=INTEGER},
+      </if>
+      <if test="eventUserEvaluation != null">
+        #{eventUserEvaluation,jdbcType=VARCHAR},
+      </if>
+      <if test="eventUserScore != null">
+        #{eventUserScore,jdbcType=DOUBLE},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acceptedAt != null">
+        #{acceptedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="completedAt != null">
+        #{completedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="club.tabstudio.gridmanagementsystem.model.Events">
+    <!--@mbg.generated-->
+    update events
+    <set>
+      <if test="eventAreaId != null">
+        event_area_id = #{eventAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="eventDesc != null">
+        event_desc = #{eventDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="eventPosition != null">
+        event_position = #{eventPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="eventAddress != null">
+        event_address = #{eventAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="eventStatus != null">
+        event_status = #{eventStatus,jdbcType=INTEGER},
+      </if>
+      <if test="eventAreaAdminId != null">
+        event_area_admin_id = #{eventAreaAdminId,jdbcType=INTEGER},
+      </if>
+      <if test="eventUserEvaluation != null">
+        event_user_evaluation = #{eventUserEvaluation,jdbcType=VARCHAR},
+      </if>
+      <if test="eventUserScore != null">
+        event_user_score = #{eventUserScore,jdbcType=DOUBLE},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acceptedAt != null">
+        accepted_at = #{acceptedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="completedAt != null">
+        completed_at = #{completedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where event_id = #{eventId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="club.tabstudio.gridmanagementsystem.model.Events">
+    <!--@mbg.generated-->
+    update events
+    set event_area_id = #{eventAreaId,jdbcType=INTEGER},
+      event_desc = #{eventDesc,jdbcType=VARCHAR},
+      event_position = #{eventPosition,jdbcType=VARCHAR},
+      event_address = #{eventAddress,jdbcType=VARCHAR},
+      event_status = #{eventStatus,jdbcType=INTEGER},
+      event_area_admin_id = #{eventAreaAdminId,jdbcType=INTEGER},
+      event_user_evaluation = #{eventUserEvaluation,jdbcType=VARCHAR},
+      event_user_score = #{eventUserScore,jdbcType=DOUBLE},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      accepted_at = #{acceptedAt,jdbcType=TIMESTAMP},
+      completed_at = #{completedAt,jdbcType=TIMESTAMP}
+    where event_id = #{eventId,jdbcType=VARCHAR}
+  </update>
+
+<!--auto generated by MybatisCodeHelper on 2022-05-10-->
+  <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from events
+    </select>
+</mapper>
