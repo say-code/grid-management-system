@@ -10,10 +10,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * 报事事项 Model
- * @author wangyihan
- */
 @Data
 @Builder
 @AllArgsConstructor
@@ -21,7 +17,9 @@ import lombok.NoArgsConstructor;
 public class Events {
     private String eventId;
 
-    private Integer eventAreaId;
+    private String eventAreaId;
+
+    private String eventAreaAdminId;
 
     private String eventDesc;
 
@@ -29,13 +27,13 @@ public class Events {
 
     private String eventAddress;
 
-    private Integer eventStatus;
-
-    private Integer eventAreaAdminId;
+    private String eventUserId;
 
     private String eventUserEvaluation;
 
     private Double eventUserScore;
+
+    private Integer eventStatus;
 
     private Date createdAt;
 

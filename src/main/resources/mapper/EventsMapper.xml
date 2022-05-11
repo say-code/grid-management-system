@@ -9,23 +9,24 @@
     <!--@mbg.generated-->
     <!--@Table events-->
     <id column="event_id" jdbcType="VARCHAR" property="eventId" />
-    <result column="event_area_id" jdbcType="INTEGER" property="eventAreaId" />
+    <result column="event_area_id" jdbcType="VARCHAR" property="eventAreaId" />
+    <result column="event_area_admin_id" jdbcType="VARCHAR" property="eventAreaAdminId" />
     <result column="event_desc" jdbcType="VARCHAR" property="eventDesc" />
     <result column="event_position" jdbcType="VARCHAR" property="eventPosition" />
     <result column="event_address" jdbcType="VARCHAR" property="eventAddress" />
-    <result column="event_status" jdbcType="INTEGER" property="eventStatus" />
-    <result column="event_area_admin_id" jdbcType="INTEGER" property="eventAreaAdminId" />
+    <result column="event_user_id" jdbcType="VARCHAR" property="eventUserId" />
     <result column="event_user_evaluation" jdbcType="VARCHAR" property="eventUserEvaluation" />
     <result column="event_user_score" jdbcType="DOUBLE" property="eventUserScore" />
+    <result column="event_status" jdbcType="INTEGER" property="eventStatus" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="accepted_at" jdbcType="TIMESTAMP" property="acceptedAt" />
     <result column="completed_at" jdbcType="TIMESTAMP" property="completedAt" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    event_id, event_area_id, event_desc, event_position, event_address, event_status, 
-    event_area_admin_id, event_user_evaluation, event_user_score, created_at, accepted_at, 
-    completed_at
+    event_id, event_area_id, event_area_admin_id, event_desc, event_position, event_address, 
+    event_user_id, event_user_evaluation, event_user_score, event_status, created_at, 
+    accepted_at, completed_at
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -41,15 +42,15 @@
   </delete>
   <insert id="insert" parameterType="club.tabstudio.gridmanagementsystem.model.Events">
     <!--@mbg.generated-->
-    insert into events (event_id, event_area_id, event_desc, 
-      event_position, event_address, event_status, 
-      event_area_admin_id, event_user_evaluation, 
-      event_user_score, created_at, accepted_at, 
+    insert into events (event_id, event_area_id, event_area_admin_id, 
+      event_desc, event_position, event_address, 
+      event_user_id, event_user_evaluation, event_user_score, 
+      event_status, created_at, accepted_at, 
       completed_at)
-    values (#{eventId,jdbcType=VARCHAR}, #{eventAreaId,jdbcType=INTEGER}, #{eventDesc,jdbcType=VARCHAR}, 
-      #{eventPosition,jdbcType=VARCHAR}, #{eventAddress,jdbcType=VARCHAR}, #{eventStatus,jdbcType=INTEGER}, 
-      #{eventAreaAdminId,jdbcType=INTEGER}, #{eventUserEvaluation,jdbcType=VARCHAR}, 
-      #{eventUserScore,jdbcType=DOUBLE}, #{createdAt,jdbcType=TIMESTAMP}, #{acceptedAt,jdbcType=TIMESTAMP}, 
+    values (#{eventId,jdbcType=VARCHAR}, #{eventAreaId,jdbcType=VARCHAR}, #{eventAreaAdminId,jdbcType=VARCHAR}, 
+      #{eventDesc,jdbcType=VARCHAR}, #{eventPosition,jdbcType=VARCHAR}, #{eventAddress,jdbcType=VARCHAR}, 
+      #{eventUserId,jdbcType=VARCHAR}, #{eventUserEvaluation,jdbcType=VARCHAR}, #{eventUserScore,jdbcType=DOUBLE}, 
+      #{eventStatus,jdbcType=INTEGER}, #{createdAt,jdbcType=TIMESTAMP}, #{acceptedAt,jdbcType=TIMESTAMP}, 
       #{completedAt,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="club.tabstudio.gridmanagementsystem.model.Events">
@@ -62,6 +63,9 @@
       <if test="eventAreaId != null">
         event_area_id,
       </if>
+      <if test="eventAreaAdminId != null">
+        event_area_admin_id,
+      </if>
       <if test="eventDesc != null">
         event_desc,
       </if>
@@ -71,17 +75,17 @@
       <if test="eventAddress != null">
         event_address,
       </if>
-      <if test="eventStatus != null">
-        event_status,
-      </if>
-      <if test="eventAreaAdminId != null">
-        event_area_admin_id,
+      <if test="eventUserId != null">
+        event_user_id,
       </if>
       <if test="eventUserEvaluation != null">
         event_user_evaluation,
       </if>
       <if test="eventUserScore != null">
         event_user_score,
+      </if>
+      <if test="eventStatus != null">
+        event_status,
       </if>
       <if test="createdAt != null">
         created_at,
@@ -98,7 +102,10 @@
         #{eventId,jdbcType=VARCHAR},
       </if>
       <if test="eventAreaId != null">
-        #{eventAreaId,jdbcType=INTEGER},
+        #{eventAreaId,jdbcType=VARCHAR},
+      </if>
+      <if test="eventAreaAdminId != null">
+        #{eventAreaAdminId,jdbcType=VARCHAR},
       </if>
       <if test="eventDesc != null">
         #{eventDesc,jdbcType=VARCHAR},
@@ -109,17 +116,17 @@
       <if test="eventAddress != null">
         #{eventAddress,jdbcType=VARCHAR},
       </if>
-      <if test="eventStatus != null">
-        #{eventStatus,jdbcType=INTEGER},
-      </if>
-      <if test="eventAreaAdminId != null">
-        #{eventAreaAdminId,jdbcType=INTEGER},
+      <if test="eventUserId != null">
+        #{eventUserId,jdbcType=VARCHAR},
       </if>
       <if test="eventUserEvaluation != null">
         #{eventUserEvaluation,jdbcType=VARCHAR},
       </if>
       <if test="eventUserScore != null">
         #{eventUserScore,jdbcType=DOUBLE},
+      </if>
+      <if test="eventStatus != null">
+        #{eventStatus,jdbcType=INTEGER},
       </if>
       <if test="createdAt != null">
         #{createdAt,jdbcType=TIMESTAMP},
@@ -137,7 +144,10 @@
     update events
     <set>
       <if test="eventAreaId != null">
-        event_area_id = #{eventAreaId,jdbcType=INTEGER},
+        event_area_id = #{eventAreaId,jdbcType=VARCHAR},
+      </if>
+      <if test="eventAreaAdminId != null">
+        event_area_admin_id = #{eventAreaAdminId,jdbcType=VARCHAR},
       </if>
       <if test="eventDesc != null">
         event_desc = #{eventDesc,jdbcType=VARCHAR},
@@ -148,17 +158,17 @@
       <if test="eventAddress != null">
         event_address = #{eventAddress,jdbcType=VARCHAR},
       </if>
-      <if test="eventStatus != null">
-        event_status = #{eventStatus,jdbcType=INTEGER},
-      </if>
-      <if test="eventAreaAdminId != null">
-        event_area_admin_id = #{eventAreaAdminId,jdbcType=INTEGER},
+      <if test="eventUserId != null">
+        event_user_id = #{eventUserId,jdbcType=VARCHAR},
       </if>
       <if test="eventUserEvaluation != null">
         event_user_evaluation = #{eventUserEvaluation,jdbcType=VARCHAR},
       </if>
       <if test="eventUserScore != null">
         event_user_score = #{eventUserScore,jdbcType=DOUBLE},
+      </if>
+      <if test="eventStatus != null">
+        event_status = #{eventStatus,jdbcType=INTEGER},
       </if>
       <if test="createdAt != null">
         created_at = #{createdAt,jdbcType=TIMESTAMP},
@@ -175,14 +185,15 @@
   <update id="updateByPrimaryKey" parameterType="club.tabstudio.gridmanagementsystem.model.Events">
     <!--@mbg.generated-->
     update events
-    set event_area_id = #{eventAreaId,jdbcType=INTEGER},
+    set event_area_id = #{eventAreaId,jdbcType=VARCHAR},
+      event_area_admin_id = #{eventAreaAdminId,jdbcType=VARCHAR},
       event_desc = #{eventDesc,jdbcType=VARCHAR},
       event_position = #{eventPosition,jdbcType=VARCHAR},
       event_address = #{eventAddress,jdbcType=VARCHAR},
-      event_status = #{eventStatus,jdbcType=INTEGER},
-      event_area_admin_id = #{eventAreaAdminId,jdbcType=INTEGER},
+      event_user_id = #{eventUserId,jdbcType=VARCHAR},
       event_user_evaluation = #{eventUserEvaluation,jdbcType=VARCHAR},
       event_user_score = #{eventUserScore,jdbcType=DOUBLE},
+      event_status = #{eventStatus,jdbcType=INTEGER},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
       accepted_at = #{acceptedAt,jdbcType=TIMESTAMP},
       completed_at = #{completedAt,jdbcType=TIMESTAMP}
@@ -192,7 +203,51 @@
 <!--auto generated by MybatisCodeHelper on 2022-05-10-->
   <select id="selectAll" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         from events
     </select>
+
+<!--auto generated by MybatisCodeHelper on 2022-05-10-->
+  <select id="listByEventAreaId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from events
+    where event_area_id=#{eventAreaId,jdbcType=VARCHAR}
+  </select>
+
+<!--auto generated by MybatisCodeHelper on 2022-05-10-->
+  <select id="selectAllByEventAreaId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from events
+    where event_area_id=#{eventAreaId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectEventBy_Users_Name" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from events
+    where event_area_admin_id in (
+        select user_id
+        from users
+        where name=#{name,jdbcType=VARCHAR}
+    )
+  </select>
+
+<!--auto generated by MybatisCodeHelper on 2022-05-10-->
+  <select id="selectAllByEventAreaAdminId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from events
+    where event_area_admin_id=#{eventAreaAdminId,jdbcType=VARCHAR}
+  </select>
+
+<!--auto generated by MybatisCodeHelper on 2022-05-10-->
+  <select id="selectByCreatedAt" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from events
+    where YEAR(#{time,jdbcType=TIMESTAMP}) = YEAR(created_at)
+    and MONTH(#{time,jdbcType=TIMESTAMP}) = MONTH(created_at)
+  </select>
 </mapper>
