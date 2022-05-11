@@ -6,6 +6,10 @@
  * @Author: wangyihan
  */
 
+/*
+ * @Author: wangyihan
+ */
+
 package club.tabstudio.gridmanagementsystem.controller;
 
 import club.tabstudio.gridmanagementsystem.model.Events;
@@ -45,16 +49,22 @@ public class EventsController {
 
     /**
      * 修改报事事项
-     * @param events 报事事项
+     * @param map 报事事项
      * @return 参数是否修改成功
      */
     @PostMapping("edit")
-    public int editEvents(@RequestBody Events events) {
-        Integer eventStatus = events.getEventStatus();
+    public int editEvents(@RequestBody Map<String,Object> map) {
+        log.warn("我在这里！！！！！！！！"+String.valueOf(map));
+        Integer eventStatus = Integer.valueOf(map.get("eventStatus").toString());
+        String eventId = String.valueOf(map.get("eventId"));
         if (eventStatus == 0){
+            Events events = new Events();
+            events.mapToEvents(map);
             return eventsService.insertSelective(events);
         }
-        else if (eventStatus == 1 && events.getAcceptedAt() == null){
+        Events events = eventsService.selectByPrimaryKey(eventId);
+        if (eventStatus == 1 && events.getAcceptedAt() == null){
+            events.mapToEvents(map);
             Date date = new Date(System.currentTimeMillis());
             events.setAcceptedAt(date);
             return eventsService.updateByPrimaryKeySelective(events);

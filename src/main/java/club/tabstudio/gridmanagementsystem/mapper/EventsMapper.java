@@ -2,6 +2,10 @@
  * @Author: wangyihan
  */
 
+/*
+ * @Author: wangyihan
+ */
+
 package club.tabstudio.gridmanagementsystem.mapper;
 import java.util.Date;
 
@@ -62,7 +66,7 @@ public interface EventsMapper {
      * @param name 网格员姓名
      * @return 报事事项数组
      */
-    List<Events> selectEventBy_Users_Name(@Param("name") String name);
+    List<Events> selectEventByNameWithUsers(@Param("name") String name);
 
     /**
      * 根据网格员Id来查找报事事项
