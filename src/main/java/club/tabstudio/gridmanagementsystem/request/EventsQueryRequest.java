@@ -34,39 +34,9 @@ public class EventsQueryRequest extends Events {
 
     private int timeStatus = 0;
 
-    @JsonFormat(pattern = "yyyy-MM")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startTime;
-    @JsonFormat(pattern = "yyyy-MM")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endTime;
 
-//    public void timeStatusCheck() {
-//        if (endTimeDate != null) {
-//            this.timeStatus = 3;
-//            SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-//            try {
-//                this.startTime = format.parse(startTimeYear + startTimeMonth + startTimeDate);
-//                this.endTime = format.parse(endTimeYear + endTimeMonth + endTimeDate);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//        } else if (endTimeMonth != null) {
-//            this.timeStatus = 2;
-//            SimpleDateFormat format = new SimpleDateFormat("yyyyMM");
-//            try {
-//                this.startTime = format.parse(startTimeYear + startTimeMonth);
-//                this.endTime = format.parse(endTimeYear + endTimeMonth);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//        } else if (endTimeYear != null) {
-//            this.timeStatus = 1;
-//            SimpleDateFormat format = new SimpleDateFormat("yyyy");
-//            try {
-//                this.startTime = format.parse(startTimeYear);
-//                this.endTime = format.parse(endTimeYear);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 }
