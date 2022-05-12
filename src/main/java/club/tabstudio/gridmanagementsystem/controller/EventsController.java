@@ -136,7 +136,7 @@ public class EventsController {
      *      String eventUserId 通过报事用户Id查询；
      *      String startTime 通过时间区间查询 必须和endTime联合使用
      *      String endTime 通过时间区间查询 必须和startTime联合使用。
-     *      !!!注意：返回的数据格式为 yyyy-MM-dd HH:mm:ss!!!
+     *      !!!注意：返回的数据格式为 yyyy-MM-dd!!!
      * @param request 报事事项筛选参数
      * @return 返回包含 event所有信息 网格区域名 网格员姓名 报事用户姓名的数组
      */
