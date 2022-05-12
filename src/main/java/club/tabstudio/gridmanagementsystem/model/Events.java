@@ -6,8 +6,11 @@
  * @Author: wangyihan
  */
 
+
 package club.tabstudio.gridmanagementsystem.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
@@ -47,37 +50,62 @@ public class Events {
 
     private Date completedAt;
 
-    public void mapToEvents(Map<String,Object> map){
-        if (map.containsKey("eventId")){
-            this.eventId = String.valueOf(map.get("eventId"));
+    private String eventAreaAdminName;
+
+    private String eventUserName;
+
+    private String eventAreaName;
+
+    private String startTimeYear;
+
+    private String startTimeMonth;
+
+    private String startTimeDate;
+
+    private String endTimeYear;
+
+    private String endTimeMonth;
+
+    private String endTimeDate;
+
+    private int timeStatus = 0;
+
+    private Date startTime;
+
+    private Date endTime;
+
+    public void timeStatusCheck(){
+        if ( endTimeDate != null){
+            this.timeStatus = 3;
+            SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+            try {
+                this.startTime = format.parse(startTimeYear+startTimeMonth+startTimeDate);
+                this.endTime = format.parse(endTimeYear+endTimeMonth+endTimeDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
-        if (map.containsKey("eventAreaId")){
-            this.eventAreaId = String.valueOf(map.get("eventAreaId"));
+        else if ( endTimeMonth != null){
+            this.timeStatus = 2;
+            SimpleDateFormat format = new SimpleDateFormat("yyyyMM");
+            try {
+                this.startTime = format.parse(startTimeYear+startTimeMonth);
+                this.endTime = format.parse(endTimeYear+endTimeMonth);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
-        if (map.containsKey("eventAreaAdminId")){
-            this.eventAreaAdminId = String.valueOf(map.get("eventAreaAdminId"));
+        else if ( endTimeYear != null){
+            this.timeStatus = 1;
+            SimpleDateFormat format = new SimpleDateFormat("yyyy");
+            try {
+                this.startTime = format.parse(startTimeYear);
+                this.endTime = format.parse(endTimeYear);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
-        if (map.containsKey("eventDesc")){
-            this.eventDesc = String.valueOf(map.get("eventDesc"));
-        }
-        if (map.containsKey("eventPosition")){
-            this.eventPosition = String.valueOf((map.get("eventPosition")));
-        }
-        if (map.containsKey("eventAddress")){
-            this.eventAddress = String.valueOf(map.get("eventAddress"));
-        }
-        if (map.containsKey("eventUserId")){
-            this.eventUserId = String.valueOf(map.get("eventUserId"));
-        }
-        if (map.containsKey("eventUserEvaluation")){
-            this.eventUserEvaluation = String.valueOf(map.get("eventUserEvaluation"));
-        }
-        if (map.containsKey("eventUserScore")){
-            this.eventUserScore = Double.valueOf(map.get("eventUserScore").toString());
-        }
-        if (map.containsKey("eventStatus")){
-            this.eventStatus = Integer.valueOf(map.get("eventStatus").toString());;
-        }
+    }
+
 
     }
-}

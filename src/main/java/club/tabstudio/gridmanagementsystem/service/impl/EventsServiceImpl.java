@@ -14,6 +14,10 @@
  * @Author: wangyihan
  */
 
+/*
+ * @Author: wangyihan
+ */
+
 package club.tabstudio.gridmanagementsystem.service.impl;
 
 import club.tabstudio.gridmanagementsystem.mapper.EventsMapper;
@@ -78,6 +82,16 @@ public class EventsServiceImpl implements IEventsService {
     @Override
     public int updateByPrimaryKeySelective(Events record) {
         return eventsMapper.updateByPrimaryKeySelective(record);
+    }
+
+    @Override
+    public List<Events> selectAllWithOthersSelective(Events events) {
+        return eventsMapper.selectAllWithOthersSelective(events);
+    }
+
+    @Override
+    public int deleteByPrimaryKey(String eventId) {
+        return eventsMapper.deleteByPrimaryKey(eventId);
     }
 
 
