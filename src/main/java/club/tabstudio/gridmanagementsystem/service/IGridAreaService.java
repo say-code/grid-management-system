@@ -29,4 +29,18 @@ public interface IGridAreaService {
      * @return 1为插入成功
      */
     int insertSelective(GridArea record);
+
+    /**
+     *  通过area_id更新网格区域信息
+     * @param record 网格区域信息
+     * @return 1表示更新成功
+     */
+    int updateByPrimaryKeySelective(GridArea record);
+
+    /**
+     * 通过areaId删除网格信息
+     * @param areaId 删除网格信息
+     * @return 1表示删除成功
+     */
+    int deleteByPrimaryKey(String areaId);
 }

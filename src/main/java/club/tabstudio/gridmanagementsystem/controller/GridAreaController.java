@@ -1,21 +1,10 @@
-/*
- * @Author: wangyihan
- */
-
-/*
- * @Author: wangyihan
- */
-
-/*
- * @Author: wangyihan
- */
-
 package club.tabstudio.gridmanagementsystem.controller;
 
 import club.tabstudio.gridmanagementsystem.model.GridArea;
 import club.tabstudio.gridmanagementsystem.service.IGridAreaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -50,14 +39,31 @@ public class GridAreaController {
      */
     @PostMapping("insert")
     public int insert(@RequestBody GridArea gridArea){
-        log.warn(gridArea.toString());
         gridArea.setAreaId(UUID.randomUUID().toString());
         gridArea.setCreatedAt(new Date(System.currentTimeMillis()));
         return gridAreaService.insertSelective(gridArea);
     }
 
-//    @PostMapping("update")
+    /**
+     * 通过areaId更新网格区域信息
+     * @param gridArea 网格区域信息
+     * @return 1表示更新成功
+     */
+    @PostMapping("update")
+    public int update(@RequestBody GridArea gridArea){
+        gridArea.setUpdatedAt(new Date(System.currentTimeMillis()));
+        return  gridAreaService.updateByPrimaryKeySelective(gridArea);
+    }
 
+    /**
+     * 根据网格区域Id删除
+     * @param gridArea 传入Id即可
+     * @return
+     */
+    @PostMapping("delete")
+    public int delete(@RequestBody GridArea gridArea){
+        return gridAreaService.deleteByPrimaryKey(gridArea.getAreaId());
+    }
 
 
 }

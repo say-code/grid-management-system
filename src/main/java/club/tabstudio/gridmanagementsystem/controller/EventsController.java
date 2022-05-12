@@ -147,12 +147,12 @@ public class EventsController {
 
     /**
      * 根据时间Id删除
-     * @param eventId 事件Id
+     * @param events 事件Id
      * @return 1表示删除成功
      */
-    @GetMapping("delete")
-    public int deleteByEventId(@RequestParam String eventId){
-        return eventsService.deleteByPrimaryKey(eventId);
+    @PostMapping("delete")
+    public int deleteByEventId(@RequestParam Events events){
+        return eventsService.deleteByPrimaryKey(events.getEventId());
     }
 
 }

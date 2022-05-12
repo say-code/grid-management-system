@@ -34,4 +34,14 @@ public class GridAreaImpl implements IGridAreaService {
     public int insertSelective(GridArea record) {
         return gridAreaMapper.insertSelective(record);
     }
+
+    @Override
+    public int updateByPrimaryKeySelective(GridArea record) {
+        return gridAreaMapper.updateByPrimaryKeySelective(record);
+    }
+
+    @Override
+    public int deleteByPrimaryKey(String areaId) {
+        return gridAreaMapper.deleteByPrimaryKey(areaId);
+    }
 }
