@@ -11,6 +11,10 @@
   ~ @Author: wangyihan
   -->
 
+<!--
+  ~ @Author: wangyihan
+  -->
+
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="club.tabstudio.gridmanagementsystem.mapper.EventsMapper">
   <resultMap id="BaseResultMap" type="club.tabstudio.gridmanagementsystem.model.Events">
@@ -33,7 +37,7 @@
 <!--  <resultMap id="UsersResultMap" type="club.tabstudio.gridmanagementsystem.model.Users">-->
 <!--    <result column="event_area_admin_name" jdbcType="VARCHAR" property="eventAreaAdminName" />-->
 <!--  </resultMap>-->
-    <resultMap id="JoinResultMap" type="club.tabstudio.gridmanagementsystem.model.Events" extends="BaseResultMap">
+    <resultMap id="JoinResultMap" type="club.tabstudio.gridmanagementsystem.request.EventsQueryRequest" extends="BaseResultMap">
       <collection property="eventAreaAdminName" ofType="club.tabstudio.gridmanagementsystem.model.Users" column="event_area_admin_name" jdbcType="VARCHAR" />
       <collection property="eventUserName" ofType="club.tabstudio.gridmanagementsystem.model.Users" column="event_user_name" jdbcType="VARCHAR" />
       <collection property="eventAreaName" ofType="club.tabstudio.gridmanagementsystem.model.GridArea" column="event_area_name" jdbcType="VARCHAR" />
@@ -239,45 +243,38 @@
   </select>
 
 
-  <select id="selectAllWithOthersSelective"  resultMap="JoinResultMap" parameterType="club.tabstudio.gridmanagementsystem.model.Events">
+  <select id="selectAllWithOthersSelective"  resultMap="JoinResultMap" parameterType="club.tabstudio.gridmanagementsystem.request.EventsQueryRequest">
     <!--@mbg.generated-->
     select event_id, event_area_id, event_area_admin_id, event_desc, event_position, event_address,
     event_user_id, event_user_evaluation, event_user_score, event_status, events.created_at,
-    events.accepted_at, events.completed_at,users1.`name` as admin_name,users2.`name` as users_name,
+    events.accepted_at, events.completed_at,admin_user.`name` as admin_name,user.`name` as users_name,
     grid_area.area_name as event_area_name
     from events
-    JOIN users AS users1 ON `events`.event_area_admin_id = users1.user_id
-    JOIN users As users2 ON `events`.event_user_id = users2.user_id
+    JOIN users AS admin_user ON `events`.event_area_admin_id = admin_user.user_id
+    JOIN users As user ON `events`.event_user_id = user.user_id
     JOIN grid_area ON `events`.event_area_id = grid_area.area_id
-    WHERE
-    <trim suffixOverrides="and">
+    <where>
+      <if test="eventId != null">
+        and event_id = #{eventId,jdbcType=VARCHAR}
+      </if>
       <if test="eventAreaId != null">
-        event_area_id = #{eventAreaId,jdbcType=VARCHAR} and
+        and event_area_id = #{eventAreaId,jdbcType=VARCHAR}
       </if>
       <if test="eventAreaAdminId != null">
-        event_area_admin_id = #{eventAreaAdminId,jdbcType=VARCHAR} and
+        and event_area_admin_id = #{eventAreaAdminId,jdbcType=VARCHAR}
       </if>
       <if test="eventUserId != null">
-        event_user_id = #{eventUserId,jdbcType=VARCHAR} and
+        and event_user_id = #{eventUserId,jdbcType=VARCHAR}
       </if>
       <if test="eventStatus != null">
-        event_status = #{eventStatus,jdbcType=INTEGER} and
+        and event_status = #{eventStatus,jdbcType=INTEGER}
       </if>
-      <if test="timeStatus == 1">
-        YEAR(events.created_at) between YEAR(#{startTime,jdbcType=TIMESTAMP}) and YEAR(#{endTime,jdbcType=TIMESTAMP})
-        and
-      </if>
-      <if test="timeStatus == 2">
-        YEAR(events.created_at) between YEAR(#{startTime,jdbcType=TIMESTAMP}) and YEAR(#{endTime,jdbcType=TIMESTAMP})
+      <if test="createdAt != null ">
+        and YEAR(events.created_at) between YEAR(#{startTime,jdbcType=TIMESTAMP}) and YEAR(#{endTime,jdbcType=TIMESTAMP})
         and MONTH(events.created_at) between MONTH(#{startTime,jdbcType=TIMESTAMP}) and MONTH(#{endTime,jdbcType=TIMESTAMP})
-        and
       </if>
-      <if test="timeStatus == 3">
-        YEAR(events.created_at) between YEAR(#{startTime,jdbcType=TIMESTAMP}) and YEAR(#{endTime,jdbcType=TIMESTAMP})
-        and MONTH(events.created_at) between MONTH(#{startTime,jdbcType=TIMESTAMP}) and MONTH(#{endTime,jdbcType=TIMESTAMP})
-        and DAYOFMONTH(events.created_at) between DAYOFMONTH(#{startTime,jdbcType=TIMESTAMP}) and DAYOFMONTH(#{endTime,jdbcType=TIMESTAMP})
-      </if>
-    </trim>
+
+    </where>
     ;
 
 

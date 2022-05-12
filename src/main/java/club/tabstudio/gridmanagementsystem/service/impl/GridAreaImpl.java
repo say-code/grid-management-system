@@ -2,6 +2,10 @@
  * @Author: wangyihan
  */
 
+/*
+ * @Author: wangyihan
+ */
+
 package club.tabstudio.gridmanagementsystem.service.impl;
 
 import club.tabstudio.gridmanagementsystem.mapper.GridAreaMapper;
@@ -24,5 +28,10 @@ public class GridAreaImpl implements IGridAreaService {
     @Override
     public List<GridArea> selectAll() {
         return gridAreaMapper.selectAll();
+    }
+
+    @Override
+    public int insertSelective(GridArea record) {
+        return gridAreaMapper.insertSelective(record);
     }
 }

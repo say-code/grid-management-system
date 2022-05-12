@@ -18,10 +18,15 @@
  * @Author: wangyihan
  */
 
+/*
+ * @Author: wangyihan
+ */
+
 package club.tabstudio.gridmanagementsystem.service.impl;
 
 import club.tabstudio.gridmanagementsystem.mapper.EventsMapper;
 import club.tabstudio.gridmanagementsystem.model.Events;
+import club.tabstudio.gridmanagementsystem.request.EventsQueryRequest;
 import club.tabstudio.gridmanagementsystem.service.IEventsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,7 +90,7 @@ public class EventsServiceImpl implements IEventsService {
     }
 
     @Override
-    public List<Events> selectAllWithOthersSelective(Events events) {
+    public List<EventsQueryRequest> selectAllWithOthersSelective(EventsQueryRequest events) {
         return eventsMapper.selectAllWithOthersSelective(events);
     }
 

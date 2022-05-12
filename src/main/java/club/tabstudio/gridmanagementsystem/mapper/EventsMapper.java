@@ -10,10 +10,16 @@
  * @Author: wangyihan
  */
 
+/*
+ * @Author: wangyihan
+ */
+
 package club.tabstudio.gridmanagementsystem.mapper;
 import java.util.Date;
 
-import club.tabstudio.gridmanagementsystem.model.Events;import org.apache.ibatis.annotations.Param;import java.util.List;
+import club.tabstudio.gridmanagementsystem.model.Events;
+import club.tabstudio.gridmanagementsystem.request.EventsQueryRequest;
+import org.apache.ibatis.annotations.Param;import java.util.List;
 
 /**
  * @author wangyihan
@@ -102,7 +108,7 @@ public interface EventsMapper {
      * @param events 报事事项筛选参数
      * @return 返回包含 event所有信息 网格区域名 网格员姓名 报事用户姓名的数组
      */
-    List<Events> selectAllWithOthersSelective(Events events);
+    List<EventsQueryRequest> selectAllWithOthersSelective(EventsQueryRequest events);
 
 
 

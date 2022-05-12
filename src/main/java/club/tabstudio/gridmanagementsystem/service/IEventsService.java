@@ -2,9 +2,14 @@
  * @Author: wangyihan
  */
 
+/*
+ * @Author: wangyihan
+ */
+
 package club.tabstudio.gridmanagementsystem.service;
 
 import club.tabstudio.gridmanagementsystem.model.Events;
+import club.tabstudio.gridmanagementsystem.request.EventsQueryRequest;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -96,7 +101,7 @@ public interface IEventsService {
      * @param events 报事事项筛选参数
      * @return 返回包含 event所有信息 网格区域名 网格员姓名 报事用户姓名的数组
      */
-    List<Events> selectAllWithOthersSelective(Events events);
+    List<EventsQueryRequest> selectAllWithOthersSelective(EventsQueryRequest events);
 
     /**
      * 根据时间Id删除

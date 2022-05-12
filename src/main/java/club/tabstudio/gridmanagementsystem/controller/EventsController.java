@@ -3,9 +3,14 @@
  * @Author: wangyihan
  */
 
+/*
+ * @Author: wangyihan
+ */
+
 package club.tabstudio.gridmanagementsystem.controller;
 
 import club.tabstudio.gridmanagementsystem.model.Events;
+import club.tabstudio.gridmanagementsystem.request.EventsQueryRequest;
 import club.tabstudio.gridmanagementsystem.service.IEventsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +19,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 报事事项 控制层
@@ -44,7 +50,7 @@ public class EventsController {
         else if (eventStatus == 1){
             return eventsService.updateByPrimaryKeySelective(events);
         }
-        else if(eventStatus == 2){
+        else if(eventStatus == 2 || eventStatus == 3){
             Date date = new Date(System.currentTimeMillis());
             events.setCompletedAt(date);
             return eventsService.updateByPrimaryKeySelective(events);
@@ -116,12 +122,11 @@ public class EventsController {
     @PostMapping("insert")
     public int insert(@RequestBody Events events){
         events.setEventStatus(0);
+        events.setEventId(UUID.randomUUID().toString());
         return eventsService.insertSelective(events);
     }
 
     /**
-     * 使用本接口时请至少携带一个参数！！！！(绝不是因为我不会）
-     * 无参请使用queryAll。
      * 联合筛选返回所有相关信息。
      * 联合查询 - 网格区域名 网格员姓名 报事用户姓名。
      * 支持筛选的参数：
@@ -129,34 +134,15 @@ public class EventsController {
      *      String eventAreaId 通过网格区域Id查询；
      *      String eventAreaAdminId 通过网格员Id查询；
      *      String eventUserId 通过报事用户Id查询；
-     *      {
-     *          String startTimeYear 开始年份
-     *          String startTimeMonth 开始月份
-     *          String startTimeDate 开始日期
-     *      }startTime 通过时间区间查询 必须和endTime联合使用
-     *      {
-     *          String endTimeYear 结束年份
-     *          String endTimeMonth 结束月份
-     *          String endTimeDate 结束日期
-     *      }endTime 通过时间区间查询 必须和startTime联合使用。
-     *      !!!注意：返回的年份必须是4位，月份和日期必须是两位，如"01","22"!!!
-     * @param events 报事事项筛选参数
+     *      String startTime 通过时间区间查询 必须和endTime联合使用
+     *      String endTime 通过时间区间查询 必须和startTime联合使用。
+     *      !!!注意：返回的数据格式为 yyyy-MM-dd HH:mm:ss!!!
+     * @param request 报事事项筛选参数
      * @return 返回包含 event所有信息 网格区域名 网格员姓名 报事用户姓名的数组
      */
     @PostMapping("queryAllByPara")
-    public List<Events> queryAllByPara(@RequestBody Events events){
-        events.timeStatusCheck();
-        return eventsService.selectAllWithOthersSelective(events);
-    }
-
-    @PostMapping("queryAll")
-    public List<Events> queryAllByParaPost(){
-        return eventsService.selectAllEvents();
-    }
-
-    @GetMapping("queryAll")
-    public List<Events> queryAllByParaGet(){
-        return eventsService.selectAllEvents();
+    public List<EventsQueryRequest> queryAllByPara(@RequestBody EventsQueryRequest request){
+        return eventsService.selectAllWithOthersSelective(request);
     }
 
     /**
