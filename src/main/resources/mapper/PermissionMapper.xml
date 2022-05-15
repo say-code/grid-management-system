@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.tabstudio.gridmanagementsystem.mapper.PermissionMapper">
+  <resultMap id="BaseResultMap" type="club.tabstudio.gridmanagementsystem.model.Permission">
+    <!--@mbg.generated-->
+    <!--@Table permission-->
+    <id column="permission_id" jdbcType="INTEGER" property="permissionId" />
+    <result column="permission_parent_id" jdbcType="INTEGER" property="permissionParentId" />
+    <result column="permission_name" jdbcType="VARCHAR" property="permissionName" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    permission_id, permission_parent_id, permission_name, created_at, updated_at
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from permission
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from permission
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="club.tabstudio.gridmanagementsystem.model.Permission">
+    <!--@mbg.generated-->
+    insert into permission (permission_id, permission_parent_id, 
+      permission_name, created_at, updated_at
+      )
+    values (#{permissionId,jdbcType=INTEGER}, #{permissionParentId,jdbcType=INTEGER}, 
+      #{permissionName,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="club.tabstudio.gridmanagementsystem.model.Permission">
+    <!--@mbg.generated-->
+    insert into permission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="permissionId != null">
+        permission_id,
+      </if>
+      <if test="permissionParentId != null">
+        permission_parent_id,
+      </if>
+      <if test="permissionName != null">
+        permission_name,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="permissionId != null">
+        #{permissionId,jdbcType=INTEGER},
+      </if>
+      <if test="permissionParentId != null">
+        #{permissionParentId,jdbcType=INTEGER},
+      </if>
+      <if test="permissionName != null">
+        #{permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="club.tabstudio.gridmanagementsystem.model.Permission">
+    <!--@mbg.generated-->
+    update permission
+    <set>
+      <if test="permissionParentId != null">
+        permission_parent_id = #{permissionParentId,jdbcType=INTEGER},
+      </if>
+      <if test="permissionName != null">
+        permission_name = #{permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="club.tabstudio.gridmanagementsystem.model.Permission">
+    <!--@mbg.generated-->
+    update permission
+    set permission_parent_id = #{permissionParentId,jdbcType=INTEGER},
+      permission_name = #{permissionName,jdbcType=VARCHAR},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </update>
+    <sql id="Join_Column_List">
+        <!--@mbg.generated-->
+        permission.permission_id as permission_permission_id,
+        permission.permission_parent_id as permission_permission_parent_id,
+        permission.permission_name as permission_permission_name,
+        permission.created_at as permission_created_at,
+        permission.updated_at as permission_updated_at
+    </sql>
+    <resultMap id="JoinResultMap" type="club.tabstudio.gridmanagementsystem.model.Permission">
+        <!--@mbg.generated-->
+        <id column="permission_permission_id" property="permissionId"/>
+        <result column="permission_permission_parent_id" property="permissionParentId"/>
+        <result column="permission_permission_name" property="permissionName"/>
+        <result column="permission_created_at" property="createdAt"/>
+        <result column="permission_updated_at" property="updatedAt"/>
+    </resultMap>
+</mapper>

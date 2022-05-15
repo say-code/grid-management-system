@@ -16,7 +16,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 /**
  * @author 994914269
  */
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+@SpringBootApplication
 @MapperScan("club.tabstudio.gridmanagementsystem.mapper")
 public class GridManagementSystemApplication {
 

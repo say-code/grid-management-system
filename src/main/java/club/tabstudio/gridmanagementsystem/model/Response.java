@@ -37,4 +37,8 @@ public class Response {
     public static Response error(String msg) {
         return new Response(-1, null, msg);
     }
+
+    public static Response error(String msg, Integer code) {
+        return new Response(code, null, msg);
+    }
 }

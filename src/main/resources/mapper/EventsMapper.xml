@@ -3,18 +3,6 @@
   ~ @Author: wangyihan
   -->
 
-<!--
-  ~ @Author: wangyihan
-  -->
-
-<!--
-  ~ @Author: wangyihan
-  -->
-
-<!--
-  ~ @Author: wangyihan
-  -->
-
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="club.tabstudio.gridmanagementsystem.mapper.EventsMapper">
   <resultMap id="BaseResultMap" type="club.tabstudio.gridmanagementsystem.model.Events">
@@ -34,14 +22,13 @@
     <result column="accepted_at" jdbcType="TIMESTAMP" property="acceptedAt" />
     <result column="completed_at" jdbcType="TIMESTAMP" property="completedAt" />
   </resultMap>
-<!--  <resultMap id="UsersResultMap" type="club.tabstudio.gridmanagementsystem.model.Users">-->
+<!--  <resultMap id="UsersResultMap" type="club.tabstudio.gridmanagementsystem.model.User">-->
 <!--    <result column="event_area_admin_name" jdbcType="VARCHAR" property="eventAreaAdminName" />-->
 <!--  </resultMap>-->
     <resultMap id="JoinResultMap" type="club.tabstudio.gridmanagementsystem.request.EventsQueryRequest" extends="BaseResultMap">
-      <collection property="eventAreaAdminName" ofType="club.tabstudio.gridmanagementsystem.model.Users" column="event_area_admin_name" jdbcType="VARCHAR" />
-      <collection property="eventUserName" ofType="club.tabstudio.gridmanagementsystem.model.Users" column="event_user_name" jdbcType="VARCHAR" />
+      <collection property="eventAreaAdminName" ofType="club.tabstudio.gridmanagementsystem.model.User" column="event_area_admin_name" jdbcType="VARCHAR" />
+      <collection property="eventUserName" ofType="club.tabstudio.gridmanagementsystem.model.User" column="event_user_name" jdbcType="VARCHAR" />
       <collection property="eventAreaName" ofType="club.tabstudio.gridmanagementsystem.model.GridArea" column="event_area_name" jdbcType="VARCHAR" />
-
     </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->

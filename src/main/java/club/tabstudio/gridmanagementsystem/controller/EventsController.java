@@ -10,6 +10,7 @@ import club.tabstudio.gridmanagementsystem.validation.groups.DeleteGroup;
 import club.tabstudio.gridmanagementsystem.validation.groups.EditGroup;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -142,6 +143,7 @@ public class EventsController {
      * @return 返回包含 event所有信息 网格区域名 网格员姓名 报事用户姓名的数组
      */
     @PostMapping("queryAllByPara")
+    @PreAuthorize("hasAuthority('event:query')")
     public Response queryAllByPara(@RequestBody EventsQueryRequest request){
         return new Response(0, eventsService.selectAllWithOthersSelective(request), "查询成功！");
     }

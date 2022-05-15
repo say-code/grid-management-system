@@ -1,14 +1,15 @@
-/*
- * @Author: wangyihan
- */
-
 package club.tabstudio.gridmanagementsystem.model;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.constraints.NotBlank;
 
@@ -16,7 +17,8 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Users {
+public class User {
+
     @NotBlank(message = "该字段不能为空！", groups = {})
     private String userId;
 
@@ -36,7 +38,7 @@ public class Users {
 
     private String openId;
 
-    private byte[] unionId;
+    private String unionId;
 
     private Date createdAt;
 
