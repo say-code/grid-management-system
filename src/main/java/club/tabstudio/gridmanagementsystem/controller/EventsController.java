@@ -1,20 +1,18 @@
 
-/*
- * @Author: wangyihan
- */
-
-/*
- * @Author: wangyihan
- */
-
 package club.tabstudio.gridmanagementsystem.controller;
 
 import club.tabstudio.gridmanagementsystem.model.Events;
+import club.tabstudio.gridmanagementsystem.model.Response;
 import club.tabstudio.gridmanagementsystem.request.EventsQueryRequest;
 import club.tabstudio.gridmanagementsystem.service.IEventsService;
+import club.tabstudio.gridmanagementsystem.validation.groups.CreateGroup;
+import club.tabstudio.gridmanagementsystem.validation.groups.DeleteGroup;
+import club.tabstudio.gridmanagementsystem.validation.groups.EditGroup;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -37,43 +35,43 @@ public class EventsController {
     /**
      * 修改报事事项
      * @param events 报事事项
-     * @return 1表示参数修改成功
+     * @return Response响应状态
      */
     @PostMapping("edit")
-    public int editEvents(@RequestBody Events events) {
+    public Response editEvents(@Validated({EditGroup.class}) @RequestBody Events events) {
         Integer eventStatus = events.getEventStatus();
         if (eventStatus == 1 && events.getAcceptedAt() == null){
             Date date = new Date(System.currentTimeMillis());
             events.setAcceptedAt(date);
-            return eventsService.updateByPrimaryKeySelective(events);
+            return Response.success(eventsService.updateByPrimaryKeySelective(events));
         }
         else if (eventStatus == 1){
-            return eventsService.updateByPrimaryKeySelective(events);
+            return Response.success(eventsService.updateByPrimaryKeySelective(events));
         }
         else if(eventStatus == 2 || eventStatus == 3){
             Date date = new Date(System.currentTimeMillis());
             events.setCompletedAt(date);
-            return eventsService.updateByPrimaryKeySelective(events);
+            return Response.success(eventsService.updateByPrimaryKeySelective(events));
         }
         else {
-            return 0;
+            return Response.error("eventStatus值应在0-2之间！");
         }
     }
 
     /**
      * 通过事件网格区域Id查找报事事项
-     * 废弃
+     * @deprecated 我废了
      * @param eventAreaId 报事网格区域Id
      * @return 报事事项数组
      */
     @GetMapping("queryByEventAreaId")
-    public List<Events> queryByEventAreaId(@RequestParam("eventAreaId") String eventAreaId){
-        return eventsService.selectByEventAreaId(eventAreaId);
+    public Response queryByEventAreaId(@RequestParam("eventAreaId") String eventAreaId){
+        return new Response(0, eventsService.selectByEventAreaId(eventAreaId), "查询成功！");
     }
 
     /**
      * 通过网格员姓名查找相应报事事项
-     * 废弃
+     * @deprecated 我废了
      * @param name 网格员姓名
      * @return 报事事项数组
      */
@@ -84,7 +82,7 @@ public class EventsController {
 
     /**
      *  通过网格员Id查找报事事项
-     *  废弃
+     * @deprecated 我废了
      * @param eventAreaAdminId 网格员Id
      * @return 报事事项数组
      */
@@ -95,7 +93,7 @@ public class EventsController {
 
     /**
      * 根据报事时间查找报事事项
-     * 废弃
+     * @deprecated 我废了
      * @param year 年
      * @param month 月
      * @return 报事事项数组
@@ -117,13 +115,16 @@ public class EventsController {
      *  插入新的报事事项
      *  createdAt 参数自动创建，无需传入
      * @param events 报事事项
-     * @return 1表示插入成功
+     * @return Response响应状态
      */
     @PostMapping("insert")
-    public int insert(@RequestBody Events events){
+    public Response insert(@Validated({CreateGroup.class}) @RequestBody Events events){
         events.setEventStatus(0);
         events.setEventId(UUID.randomUUID().toString());
-        return eventsService.insertSelective(events);
+        if (eventsService.insertSelective(events) > 0) {
+            return Response.success();
+        }
+        return Response.error();
     }
 
     /**
@@ -136,23 +137,23 @@ public class EventsController {
      *      String eventUserId 通过报事用户Id查询；
      *      String startTime 通过时间区间查询 必须和endTime联合使用
      *      String endTime 通过时间区间查询 必须和startTime联合使用。
-     *      !!!注意：返回的数据格式为 yyyy-MM-dd!!!
+     *      注意：返回的数据格式为 yyyy-MM-dd！
      * @param request 报事事项筛选参数
      * @return 返回包含 event所有信息 网格区域名 网格员姓名 报事用户姓名的数组
      */
     @PostMapping("queryAllByPara")
-    public List<EventsQueryRequest> queryAllByPara(@RequestBody EventsQueryRequest request){
-        return eventsService.selectAllWithOthersSelective(request);
+    public Response queryAllByPara(@RequestBody EventsQueryRequest request){
+        return new Response(0, eventsService.selectAllWithOthersSelective(request), "查询成功！");
     }
 
     /**
-     * 根据时间Id删除
+     * 根据事件Id删除
      * @param events 事件Id
-     * @return 1表示删除成功
+     * @return Response响应状态
      */
     @PostMapping("delete")
-    public int deleteByEventId(@RequestParam Events events){
-        return eventsService.deleteByPrimaryKey(events.getEventId());
+    public Response deleteByEventId(@Validated({DeleteGroup.class})@RequestBody Events events){
+        return Response.success(eventsService.deleteByPrimaryKey(events.getEventId()));
     }
 
 }

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
+import javax.validation.constraints.PastOrPresent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,6 +35,7 @@ public class EventsQueryRequest extends Events {
 
     private int timeStatus = 0;
 
+    @PastOrPresent
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startTime;
     @JsonFormat(pattern = "yyyy-MM-dd")
