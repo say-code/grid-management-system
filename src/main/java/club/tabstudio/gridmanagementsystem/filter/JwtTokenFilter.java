@@ -5,6 +5,7 @@ import club.tabstudio.gridmanagementsystem.model.UserWithPermissionList;
 import club.tabstudio.gridmanagementsystem.service.IUserService;
 import club.tabstudio.gridmanagementsystem.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.MalformedJwtException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,7 +39,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
 
         final String token = header.split(" ")[1].trim();
-        Claims claims = JwtUtils.parseToken(token);
+        Claims claims = null;
+        try {
+            claims = JwtUtils.parseToken(token);
+        } catch (MalformedJwtException ignored) {
+
+        }
         if (claims == null) {
             filterChain.doFilter(request, response);
             return;
