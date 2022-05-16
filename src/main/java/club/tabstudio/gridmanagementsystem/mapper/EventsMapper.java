@@ -1,64 +1,19 @@
-/*
- * @Author: wangyihan
- */
-
-/*
- * @Author: wangyihan
- */
-
-/*
- * @Author: wangyihan
- */
-
-/*
- * @Author: wangyihan
- */
-
 package club.tabstudio.gridmanagementsystem.mapper;
-import java.util.Date;
 
-import club.tabstudio.gridmanagementsystem.model.Events;
-import club.tabstudio.gridmanagementsystem.request.EventsQueryRequest;
-import org.apache.ibatis.annotations.Param;import java.util.List;
+import club.tabstudio.gridmanagementsystem.model.Events;import club.tabstudio.gridmanagementsystem.request.EventsQueryRequest;import org.apache.ibatis.annotations.Param;import java.util.Date;import java.util.List;
 
-/**
- * @author wangyihan
- */
 public interface EventsMapper {
-
-    /**
-     * 根据时间Id删除
-     *
-     * @param eventId 事件Id
-     * @return 1表示删除成功
-     */
     int deleteByPrimaryKey(String eventId);
 
-    /**
-     * 插入新的报事事项
-     *
-     * @param record 报事事项具体信息
-     * @return 待研究
-     */
+    int insert(Events record);
+
     int insertSelective(Events record);
 
-    /**
-     * 根据eventId查找报事事项
-     *
-     * @param eventId 报事Id
-     * @return 报事事项
-     */
     Events selectByPrimaryKey(String eventId);
 
-
-    /**
-     * 根据eventId 更新数据
-     *
-     * @param record 报事事项具体信息
-     * @return 待研究
-     */
     int updateByPrimaryKeySelective(Events record);
 
+    int updateByPrimaryKey(Events record);
 
     /**
      * 查询所有的报事事项

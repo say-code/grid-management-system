@@ -44,6 +44,8 @@ public class Events {
 
     private User areaAdmin;
 
+    private String eventAreaAdminFeedback;
+
     @NotBlank(message = "eventDesc字段不能为空！", groups = {CreateGroup.class})
     private String eventDesc;
 
