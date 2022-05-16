@@ -28,9 +28,9 @@ public class EventServiceTests {
 
     @Test
     public void selectAll() {
-        List<Events> events = eventsService.selectAllEvents();
+        List<Events> events = eventsService.selectWithAllRelation(null);
         for (Events event: events) {
-            System.out.println(event.getEventDesc());
+            System.out.println(event.getUser().getName());
         }
     }
 }

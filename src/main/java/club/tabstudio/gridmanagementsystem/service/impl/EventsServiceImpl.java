@@ -90,13 +90,13 @@ public class EventsServiceImpl implements IEventsService {
     }
 
     @Override
-    public List<EventsQueryRequest> selectAllWithOthersSelective(EventsQueryRequest events) {
-        return eventsMapper.selectAllWithOthersSelective(events);
+    public int deleteByPrimaryKey(String eventId) {
+        return eventsMapper.deleteByPrimaryKey(eventId);
     }
 
     @Override
-    public int deleteByPrimaryKey(String eventId) {
-        return eventsMapper.deleteByPrimaryKey(eventId);
+    public List<Events> selectWithAllRelation(EventsQueryRequest events) {
+        return eventsMapper.selectWithAllRelation(events);
     }
 
 

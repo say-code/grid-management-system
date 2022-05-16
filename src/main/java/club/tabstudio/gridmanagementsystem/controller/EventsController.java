@@ -119,6 +119,7 @@ public class EventsController {
      * @return Response响应状态
      */
     @PostMapping("insert")
+    @PreAuthorize("hasAuthority('event:creat')")
     public Response insert(@Validated({CreateGroup.class}) @RequestBody Events events){
         events.setEventStatus(0);
         events.setEventId(UUID.randomUUID().toString());
@@ -139,13 +140,13 @@ public class EventsController {
      *      String startTime 通过时间区间查询 必须和endTime联合使用
      *      String endTime 通过时间区间查询 必须和startTime联合使用。
      *      注意：返回的数据格式为 yyyy-MM-dd！
-     * @param request 报事事项筛选参数
-     * @return 返回包含 event所有信息 网格区域名 网格员姓名 报事用户姓名的数组
+     * @param events 报事事项筛选参数
+     * @return 返回包含 报事事项所有信息 网格员所有信息 报事人所有信息 网格区域所有信息
      */
     @PostMapping("queryAllByPara")
     @PreAuthorize("hasAuthority('event:query')")
-    public Response queryAllByPara(@RequestBody EventsQueryRequest request){
-        return new Response(0, eventsService.selectAllWithOthersSelective(request), "查询成功！");
+    public Response queryAllByPara(@RequestBody EventsQueryRequest events){
+        return new Response(0, eventsService.selectWithAllRelation(events), "查询成功！");
     }
 
     /**
@@ -154,6 +155,7 @@ public class EventsController {
      * @return Response响应状态
      */
     @PostMapping("delete")
+    @PreAuthorize("hasAuthority('event:delete')")
     public Response deleteByEventId(@Validated({DeleteGroup.class})@RequestBody Events events){
         return Response.success(eventsService.deleteByPrimaryKey(events.getEventId()));
     }

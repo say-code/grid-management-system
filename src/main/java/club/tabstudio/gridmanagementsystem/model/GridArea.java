@@ -36,9 +36,9 @@ public class GridArea {
     @NotBlank(message = "该字段不能为空", groups = {CreateGroup.class})
     private String areaGis;
 
-    @Null(message = "时间会自动加载，请勿传入！", groups = {CreateGroup.class,EditGroup.class})
+    @Null(message = "非法字段", groups = {CreateGroup.class,EditGroup.class})
     private Date createdAt;
 
-    @Null(message = "时间会自动加载，请勿传入！", groups = {CreateGroup.class,EditGroup.class})
+    @Null(message = "非法字段", groups = {CreateGroup.class,EditGroup.class})
     private Date updatedAt;
 }

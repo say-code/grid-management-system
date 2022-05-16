@@ -101,7 +101,7 @@ public interface IEventsService {
      * @param events 报事事项筛选参数
      * @return 返回包含 event所有信息 网格区域名 网格员姓名 报事用户姓名的数组
      */
-    List<EventsQueryRequest> selectAllWithOthersSelective(EventsQueryRequest events);
+    List<Events> selectWithAllRelation(EventsQueryRequest events);
 
     /**
      * 根据时间Id删除
@@ -109,4 +109,7 @@ public interface IEventsService {
      * @return 1表示删除成功
      */
     int deleteByPrimaryKey(String eventId);
+
+
+
 }

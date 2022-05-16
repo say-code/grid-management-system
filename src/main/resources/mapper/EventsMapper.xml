@@ -25,22 +25,11 @@
 <!--  <resultMap id="UsersResultMap" type="club.tabstudio.gridmanagementsystem.model.User">-->
 <!--    <result column="event_area_admin_name" jdbcType="VARCHAR" property="eventAreaAdminName" />-->
 <!--  </resultMap>-->
-    <resultMap id="JoinResultMap" type="club.tabstudio.gridmanagementsystem.request.EventsQueryRequest" extends="BaseResultMap">
-      <collection property="eventAreaAdminName" ofType="club.tabstudio.gridmanagementsystem.model.User" column="event_area_admin_name" jdbcType="VARCHAR" />
-      <collection property="eventUserName" ofType="club.tabstudio.gridmanagementsystem.model.User" column="event_user_name" jdbcType="VARCHAR" />
-      <collection property="eventAreaName" ofType="club.tabstudio.gridmanagementsystem.model.GridArea" column="event_area_name" jdbcType="VARCHAR" />
-    </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     event_id, event_area_id, event_area_admin_id, event_desc, event_position, event_address,
     event_user_id, event_user_evaluation, event_user_score, event_status, created_at,
     accepted_at, completed_at
-  </sql>
-  <sql id="Join_Column_List">
-    event_id, event_area_id, event_area_admin_id, event_desc, event_position, event_address,
-    event_user_id, event_user_evaluation, event_user_score, event_status, created_at,
-    accepted_at, completed_at, `grid-management`.users.name as event_area_admin_name,
-    `grid-management`.users.name as event_user_name
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -266,5 +255,79 @@
     ;
 
 
+  </select>
+  <sql id="Join_Column_List">
+    <!--@mbg.generated-->
+    events.event_id as events_event_id,
+    events.event_area_id as events_event_area_id,
+    events.event_area_admin_id as events_event_area_admin_id,
+    events.event_desc as events_event_desc,
+    events.event_position as events_event_position,
+    events.event_address as events_event_address,
+    events.event_user_id as events_event_user_id,
+    events.event_user_evaluation as events_event_user_evaluation,
+    events.event_user_score as events_event_user_score,
+    events.event_status as events_event_status,
+    events.created_at as events_created_at,
+    events.accepted_at as events_accepted_at,
+    events.completed_at as events_completed_at
+  </sql>
+
+  <resultMap id="JoinResultMap" type="club.tabstudio.gridmanagementsystem.model.Events">
+    <!--@mbg.generated-->
+    <id column="events_event_id" property="eventId"/>
+    <result column="events_event_area_id" property="eventAreaId"/>
+    <result column="events_event_area_admin_id" property="eventAreaAdminId"/>
+    <result column="events_event_desc" property="eventDesc"/>
+    <result column="events_event_position" property="eventPosition"/>
+    <result column="events_event_address" property="eventAddress"/>
+    <result column="events_event_user_id" property="eventUserId"/>
+    <result column="events_event_user_evaluation" property="eventUserEvaluation"/>
+    <result column="events_event_user_score" property="eventUserScore"/>
+    <result column="events_event_status" property="eventStatus"/>
+    <result column="events_created_at" property="createdAt"/>
+    <result column="events_accepted_at" property="acceptedAt"/>
+    <result column="events_completed_at" property="completedAt"/>
+  </resultMap>
+  <resultMap id="withAllRelation" type="club.tabstudio.gridmanagementsystem.model.Events"
+             extends="JoinResultMap">
+    <association property="user" resultMap="club.tabstudio.gridmanagementsystem.mapper.UserMapper.JoinResultMap"/>
+    <association property="gridArea"
+                 resultMap="club.tabstudio.gridmanagementsystem.mapper.GridAreaMapper.JoinResultMap"/>
+    <association property="areaAdmin" resultMap="club.tabstudio.gridmanagementsystem.mapper.UserMapper.JoinResultMapToAdmin"/>
+  </resultMap>
+  <select id="selectWithAllRelation" resultMap="withAllRelation">
+    select<include refid="Join_Column_List"/>,
+    <include refid="club.tabstudio.gridmanagementsystem.mapper.GridAreaMapper.Join_Column_List"/>,
+    <include refid="club.tabstudio.gridmanagementsystem.mapper.UserMapper.Join_Column_List"/>,
+    <include refid="club.tabstudio.gridmanagementsystem.mapper.UserMapper.Join_Admin_Column_List"/>
+    from events
+    left join grid_area on grid_area.area_id = events.event_area_id
+    left join users on users.user_id = events.event_user_id
+    left join users as admin on admin.user_id = events.event_area_admin_id
+    <where>
+      <if test="eventId != null">
+        and event_id = #{eventId,jdbcType=VARCHAR}
+      </if>
+      <if test="eventAreaId != null">
+        and event_area_id = #{eventAreaId,jdbcType=VARCHAR}
+      </if>
+      <if test="eventAreaAdminId != null">
+        and event_area_admin_id = #{eventAreaAdminId,jdbcType=VARCHAR}
+      </if>
+      <if test="eventUserId != null">
+        and event_user_id = #{eventUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="eventStatus != null">
+        and event_status = #{eventStatus,jdbcType=INTEGER}
+      </if>
+      <if test="createdAt != null ">
+        and YEAR(events.created_at) between YEAR(#{startTime,jdbcType=TIMESTAMP}) and YEAR(#{endTime,jdbcType=TIMESTAMP})
+        and MONTH(events.created_at) between MONTH(#{startTime,jdbcType=TIMESTAMP}) and MONTH(#{endTime,jdbcType=TIMESTAMP})
+        and DAYOFMONTH(events.created_at) between DAYOFMONTH(#{startTime,jdbcType=TIMESTAMP}) and DAYOFMONTH(#{endTime,jdbcType=TIMESTAMP})
+      </if>
+
+    </where>
+    ;
   </select>
 </mapper>

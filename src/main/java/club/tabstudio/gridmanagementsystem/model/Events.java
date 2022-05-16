@@ -30,42 +30,48 @@ import javax.validation.constraints.Null;
 @NoArgsConstructor
 public class Events {
 
-    @NotBlank(message = "该字段不能为空！", groups = {EditGroup.class, DeleteGroup.class})
+    @NotBlank(message = "eventId字段不能为空！", groups = {EditGroup.class, DeleteGroup.class})
     @Null(message = "事件ID必须为空", groups = {CreateGroup.class})
     private String eventId;
 
-    @NotBlank(message = "该字段不能为空！", groups = {CreateGroup.class})
+    @NotBlank(message = "eventAreaId字段不能为空！", groups = {CreateGroup.class})
     private String eventAreaId;
 
-    @NotBlank(message = "该字段不能为空！", groups = {CreateGroup.class})
+    private GridArea gridArea;
+
+    @NotBlank(message = "eventAreaAdminId字段不能为空！", groups = {CreateGroup.class})
     private String eventAreaAdminId;
 
-    @NotBlank(message = "该字段不能为空！", groups = {CreateGroup.class})
+    private User areaAdmin;
+
+    @NotBlank(message = "eventDesc字段不能为空！", groups = {CreateGroup.class})
     private String eventDesc;
 
     private String eventPosition;
 
     private String eventAddress;
 
-    @NotBlank(message = "该字段不能为空！", groups = {EditGroup.class, CreateGroup.class})
+    @NotBlank(message = "eventUserId字段不能为空！", groups = {EditGroup.class, CreateGroup.class})
     private String eventUserId;
 
-    @Null(message = "创建时不能传入该字段！", groups = {CreateGroup.class})
+    private User user;
+
+    @Null(message = "创建时不能传入eventUserEvaluation字段！", groups = {CreateGroup.class})
     private String eventUserEvaluation;
 
-    @Null(message = "创建时不能传入该字段！", groups = {CreateGroup.class})
+    @Null(message = "创建时不能传入eventUserScore字段！", groups = {CreateGroup.class})
     private Double eventUserScore;
 
-    @Null(message = "创建时不能传入该字段！", groups = {CreateGroup.class})
+    @Null(message = "创建时不能传入eventStatus字段！", groups = {CreateGroup.class})
     private Integer eventStatus;
 
-    @Null(message = "时间会自动加载，请勿传入！", groups = {CreateGroup.class,EditGroup.class})
+    @Null(message = "createdAt非法提交", groups = {CreateGroup.class,EditGroup.class})
     private Date createdAt;
 
-    @Null(message = "时间会自动加载，请勿传入！", groups = {CreateGroup.class,EditGroup.class})
+    @Null(message = "acceptedAt非法提交", groups = {CreateGroup.class,EditGroup.class})
     private Date acceptedAt;
 
-    @Null(message = "时间会自动加载，请勿传入！", groups = {CreateGroup.class,EditGroup.class})
+    @Null(message = "completedAt非法提交", groups = {CreateGroup.class,EditGroup.class})
     private Date completedAt;
 
 

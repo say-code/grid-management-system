@@ -27,13 +27,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EventsQueryRequest extends Events {
-    private String eventAreaAdminName;
-
-    private String eventUserName;
-
-    private String eventAreaName;
-
-    private int timeStatus = 0;
 
     @PastOrPresent
     @JsonFormat(pattern = "yyyy-MM-dd")

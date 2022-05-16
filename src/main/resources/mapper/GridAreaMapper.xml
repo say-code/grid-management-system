@@ -110,4 +110,20 @@
         <include refid="Base_Column_List"/>
         from grid_area
     </select>
+    <sql id="Join_Column_List">
+        <!--@mbg.generated-->
+        grid_area.area_id as grid_area_area_id,
+        grid_area.area_name as grid_area_area_name,
+        grid_area.area_gis as grid_area_area_gis,
+        grid_area.created_at as grid_area_created_at,
+        grid_area.updated_at as grid_area_updated_at
+    </sql>
+    <resultMap id="JoinResultMap" type="club.tabstudio.gridmanagementsystem.model.GridArea">
+        <!--@mbg.generated-->
+        <id column="grid_area_area_id" property="areaId"/>
+        <result column="grid_area_area_name" property="areaName"/>
+        <result column="grid_area_area_gis" property="areaGis"/>
+        <result column="grid_area_created_at" property="createdAt"/>
+        <result column="grid_area_updated_at" property="updatedAt"/>
+    </resultMap>
 </mapper>

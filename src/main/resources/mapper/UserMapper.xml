@@ -197,6 +197,20 @@
         users.created_at as users_created_at,
         users.updated_at as users_updated_at
     </sql>
+    <sql id="Join_Admin_Column_List" >
+        admin.user_id as admin_user_id,
+        admin.username as admin_username,
+        admin.password as admin_password,
+        admin.name as admin_name,
+        admin.telephone as admin_telephone,
+        admin.area_id as admin_area_id,
+        admin.address as admin_address,
+        admin.avatar_url as admin_avatar_url,
+        admin.open_id as admin_open_id,
+        admin.union_id as admin_union_id,
+        admin.created_at as admin_created_at,
+        admin.updated_at as admin_updated_at
+    </sql>
     <resultMap id="JoinResultMap" type="club.tabstudio.gridmanagementsystem.model.User">
         <!--@mbg.generated-->
         <id column="users_user_id" property="userId"/>
@@ -211,6 +225,21 @@
         <result column="users_union_id" property="unionId"/>
         <result column="users_created_at" property="createdAt"/>
         <result column="users_updated_at" property="updatedAt"/>
+    </resultMap>
+    <resultMap id="JoinResultMapToAdmin" type="club.tabstudio.gridmanagementsystem.model.User">
+        <!--@mbg.generated-->
+        <id column="admin_user_id" property="userId"/>
+        <result column="admin_username" property="username"/>
+        <result column="admin_password" property="password"/>
+        <result column="admin_name" property="name"/>
+        <result column="admin_telephone" property="telephone"/>
+        <result column="admin_area_id" property="areaId"/>
+        <result column="admin_address" property="address"/>
+        <result column="admin_avatar_url" property="avatarUrl"/>
+        <result column="admin_open_id" property="openId"/>
+        <result column="admin_union_id" property="unionId"/>
+        <result column="admin_created_at" property="createdAt"/>
+        <result column="admin_updated_at" property="updatedAt"/>
     </resultMap>
     <resultMap id="withRole" type="club.tabstudio.gridmanagementsystem.model.UserWithRoleList" extends="JoinResultMap">
         <collection property="roleList"
@@ -235,7 +264,7 @@
                     left join users_role on users.user_id = users_role.user_id
                     left join role on users_role.role_id = role.role_id
                     left join role_permission on role.role_id = role_permission.role_id
-                    left join permission on permission.permission_id = role_permission.permission_id
+                   left join permission on permission.permission_id = role_permission.permission_id
         where users.username = #{username,jdbcType=VARCHAR}
     </select>
 </mapper>
