@@ -141,7 +141,7 @@ public class EventsController {
      * @param events 用于查找的报事事项
      * @return 报事事项数组
      */
-    @PostMapping("queryAllForUser")
+    @PostMapping("queryEasyForUser")
     @PreAuthorize("hasAuthority('event:query:admin')")
     public Response queryAllForUserSimple(@RequestBody EventsQueryRequest events){
         String adminId = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();

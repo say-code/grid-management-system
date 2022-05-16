@@ -355,6 +355,8 @@
     <if test="createdAt != null ">
     and YEAR(events.created_at) between YEAR(#{startTime,jdbcType=TIMESTAMP}) and YEAR(#{endTime,jdbcType=TIMESTAMP})
     and MONTH(events.created_at) between MONTH(#{startTime,jdbcType=TIMESTAMP}) and MONTH(#{endTime,jdbcType=TIMESTAMP})
-    and DAYOFMONTH(events.created_at) between DAYOFMONTH(#{startTime,jdbcType=TIMESTAMP}) and DAYOFMONTH(#{endTime,jdbcType=TIMESTAMP})
+    and DAYOFMONTH(events.created_at) between DAYOFMONTH(#{startTime,jdbcType=TIMESTAMP}) and DAYOFMONTH(#{endTime,jdbcType=TIMESTAMP})</if>
+    </where>
+    ;
   </select>
 </mapper>
