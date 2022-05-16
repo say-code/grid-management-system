@@ -16,32 +16,33 @@ public class UserServiceImpl implements IUserService {
     @Resource
     private UserMapper userMapper;
 
-    
+    @Override
     public int deleteByPrimaryKey(String userId) {
         return userMapper.deleteByPrimaryKey(userId);
     }
 
-    
+    @Override
     public int insert(User record) {
         return userMapper.insert(record);
     }
 
-    
+    @Override
     public int insertSelective(User record) {
         return userMapper.insertSelective(record);
     }
 
-    
+    @Override
     public User selectByPrimaryKey(String userId) {
         return userMapper.selectByPrimaryKey(userId);
     }
 
-    
+    @Override
     public int updateByPrimaryKeySelective(User record) {
         return userMapper.updateByPrimaryKeySelective(record);
     }
 
-    
+
+    @Override
     public int updateByPrimaryKey(User record) {
         return userMapper.updateByPrimaryKey(record);
     }

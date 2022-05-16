@@ -14,7 +14,7 @@ public class RolePermissionServiceImpl implements IRolePermissionService {
     @Resource
     private RolePermissionMapper rolePermissionMapper;
 
-    
+    @Override
     public int deleteByPrimaryKey(Integer roleId,Integer permissionId) {
         return rolePermissionMapper.deleteByPrimaryKey(roleId,permissionId);
     }

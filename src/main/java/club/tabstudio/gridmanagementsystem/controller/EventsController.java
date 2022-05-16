@@ -39,7 +39,7 @@ public class EventsController {
      * @return Response响应状态
      */
     @PostMapping("insert")
-    @PreAuthorize("hasAuthority('event:creat')")
+    @PreAuthorize("hasAuthority('event:create')")
     public Response insert(@Validated({CreateGroup.class}) @RequestBody Events events){
         events.setEventStatus(0);
         events.setEventId(UUID.randomUUID().toString());
@@ -128,8 +128,8 @@ public class EventsController {
     @PostMapping("queryAllForUser")
     @PreAuthorize("hasAuthority('event:query:user')")
     public Response queryAllForUser(@RequestBody EventsQueryRequest events){
-        String adminId = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
-        events.setEventUserId(adminId);
+        String userId = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        events.setEventUserId(userId);
         return new Response(0, eventsService.selectWithAllRelation(events), "查询成功！");
     }
 
@@ -144,10 +144,12 @@ public class EventsController {
     @PostMapping("queryEasyForUser")
     @PreAuthorize("hasAuthority('event:query:admin')")
     public Response queryAllForUserSimple(@RequestBody EventsQueryRequest events){
-        String adminId = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
-        events.setEventUserId(adminId);
+        String userId = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        events.setEventUserId(userId);
         return new Response(0, eventsService.selectEventDescAndCreatedAtByEventUserId(events), "查询成功！");
     }
+
+
 
 
     /* -------- delete 删除模块 --------*/
