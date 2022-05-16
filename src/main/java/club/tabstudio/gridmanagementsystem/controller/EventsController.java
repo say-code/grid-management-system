@@ -118,6 +118,37 @@ public class EventsController {
         return new Response(0, eventsService.selectWithAllRelation(events), "查询成功！");
     }
 
+    /**
+     * 查找报事事项
+     * 【详细信息】
+     * 权限：用户
+     * @param events 用于查找的报事事项
+     * @return 报事事项数组
+     */
+    @PostMapping("queryAllForUser")
+    @PreAuthorize("hasAuthority('event:query:user')")
+    public Response queryAllForUser(@RequestBody EventsQueryRequest events){
+        String adminId = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        events.setEventUserId(adminId);
+        return new Response(0, eventsService.selectWithAllRelation(events), "查询成功！");
+    }
+
+    /**
+     * 查找报事事项
+     * 【简略信息】
+     * 包含事件描述 事件发生日期
+     * 权限：用户
+     * @param events 用于查找的报事事项
+     * @return 报事事项数组
+     */
+    @PostMapping("queryAllForUser")
+    @PreAuthorize("hasAuthority('event:query:admin')")
+    public Response queryAllForUserSimple(@RequestBody EventsQueryRequest events){
+        String adminId = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        events.setEventUserId(adminId);
+        return new Response(0, eventsService.selectEventDescAndCreatedAtByEventUserId(events), "查询成功！");
+    }
+
 
     /* -------- delete 删除模块 --------*/
 

@@ -1,6 +1,8 @@
 package club.tabstudio.gridmanagementsystem.mapper;
 
-import club.tabstudio.gridmanagementsystem.model.Events;import club.tabstudio.gridmanagementsystem.request.EventsQueryRequest;import org.apache.ibatis.annotations.Param;import java.util.Date;import java.util.List;
+import club.tabstudio.gridmanagementsystem.model.Events;
+import club.tabstudio.gridmanagementsystem.model.UserEasy;
+import club.tabstudio.gridmanagementsystem.request.EventsQueryRequest;import org.apache.ibatis.annotations.Param;import java.util.Date;import java.util.List;
 
 public interface EventsMapper {
     int deleteByPrimaryKey(String eventId);
@@ -14,6 +16,13 @@ public interface EventsMapper {
     int updateByPrimaryKeySelective(Events record);
 
     int updateByPrimaryKey(Events record);
+
+    /**
+     * 简单查询
+     * @param eventUserId 用户Id
+     * @return 返回事件描述和事件建立时间
+     */
+    List<UserEasy> selectEventDescAndCreatedAtByEventUserId(EventsQueryRequest eventsQueryRequest);
 
     /**
      * 查询所有的报事事项
