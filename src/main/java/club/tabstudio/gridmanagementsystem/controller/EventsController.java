@@ -3,6 +3,7 @@ package club.tabstudio.gridmanagementsystem.controller;
 
 import club.tabstudio.gridmanagementsystem.model.Events;
 import club.tabstudio.gridmanagementsystem.model.Response;
+import club.tabstudio.gridmanagementsystem.model.UserWithPermissionList;
 import club.tabstudio.gridmanagementsystem.request.EventsQueryRequest;
 import club.tabstudio.gridmanagementsystem.service.IEventsService;
 import club.tabstudio.gridmanagementsystem.validation.groups.CreateGroup;
@@ -11,13 +12,10 @@ import club.tabstudio.gridmanagementsystem.validation.groups.EditGroup;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -32,6 +30,26 @@ public class EventsController {
     @Autowired
     private IEventsService eventsService;
 
+    /* -------- insert 插入模块 --------*/
+
+    /**
+     *  插入新的报事事项
+     *  createdAt 参数自动创建，无需传入
+     * @param events 报事事项
+     * @return Response响应状态
+     */
+    @PostMapping("insert")
+    @PreAuthorize("hasAuthority('event:creat')")
+    public Response insert(@Validated({CreateGroup.class}) @RequestBody Events events){
+        events.setEventStatus(0);
+        events.setEventId(UUID.randomUUID().toString());
+        if (eventsService.insertSelective(events) > 0) {
+            return Response.success();
+        }
+        return Response.error();
+    }
+
+    /* -------- edit 修改模块 --------*/
 
     /**
      * 修改报事事项
@@ -59,77 +77,13 @@ public class EventsController {
         }
     }
 
-    /**
-     * 通过事件网格区域Id查找报事事项
-     * @deprecated 我废了
-     * @param eventAreaId 报事网格区域Id
-     * @return 报事事项数组
-     */
-    @GetMapping("queryByEventAreaId")
-    public Response queryByEventAreaId(@RequestParam("eventAreaId") String eventAreaId){
-        return new Response(0, eventsService.selectByEventAreaId(eventAreaId), "查询成功！");
-    }
+
+    /* -------- query 查找模块 --------*/
 
     /**
-     * 通过网格员姓名查找相应报事事项
-     * @deprecated 我废了
-     * @param name 网格员姓名
-     * @return 报事事项数组
-     */
-    @GetMapping("queryByName")
-    public List<Events> queryByName(@RequestParam("name") String name){
-        return eventsService.selectEventByName(name);
-    }
-
-    /**
-     *  通过网格员Id查找报事事项
-     * @deprecated 我废了
-     * @param eventAreaAdminId 网格员Id
-     * @return 报事事项数组
-     */
-    @GetMapping("queryByAdminId")
-    public List<Events> queryByAdminId(@RequestParam("eventAdminId") String eventAreaAdminId){
-        return eventsService.selectAllByEventAreaAdminId(eventAreaAdminId);
-    }
-
-    /**
-     * 根据报事时间查找报事事项
-     * @deprecated 我废了
-     * @param year 年
-     * @param month 月
-     * @return 报事事项数组
-     */
-    @GetMapping("queryByTime")
-    public List<Events> queryByTime(@RequestParam("year") Integer year,
-                                    @RequestParam("month") Integer month){
-        Date overDate = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMM");
-        try {
-            overDate = format.parse(year.toString()+month.toString());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return eventsService.selectByTime(overDate);
-    }
-
-    /**
-     *  插入新的报事事项
-     *  createdAt 参数自动创建，无需传入
-     * @param events 报事事项
-     * @return Response响应状态
-     */
-    @PostMapping("insert")
-    @PreAuthorize("hasAuthority('event:creat')")
-    public Response insert(@Validated({CreateGroup.class}) @RequestBody Events events){
-        events.setEventStatus(0);
-        events.setEventId(UUID.randomUUID().toString());
-        if (eventsService.insertSelective(events) > 0) {
-            return Response.success();
-        }
-        return Response.error();
-    }
-
-    /**
+     * 查找报事事项
+     * 权限：网格长
+     * 以下为【详细信息】
      * 联合筛选返回所有相关信息。
      * 联合查询 - 网格区域名 网格员姓名 报事用户姓名。
      * 支持筛选的参数：
@@ -148,6 +102,24 @@ public class EventsController {
     public Response queryAllByPara(@RequestBody EventsQueryRequest events){
         return new Response(0, eventsService.selectWithAllRelation(events), "查询成功！");
     }
+
+    /**
+     * 查找报事事项
+     * 【详细信息】
+     * 权限：网格员
+     * @param events 用于查找的报事事项
+     * @return 报事事项数组
+     */
+    @PostMapping("queryAllForAdmin")
+    @PreAuthorize("hasAuthority('event:query:admin')")
+    public Response queryAllForAdminId(@RequestBody EventsQueryRequest events){
+        String adminId = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        events.setEventAreaAdminId(adminId);
+        return new Response(0, eventsService.selectWithAllRelation(events), "查询成功！");
+    }
+
+
+    /* -------- delete 删除模块 --------*/
 
     /**
      * 根据事件Id删除
