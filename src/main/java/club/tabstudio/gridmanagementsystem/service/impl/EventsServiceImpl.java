@@ -1,32 +1,9 @@
-/*
- * @Author: wangyihan
- */
-
-/*
- * @Author: wangyihan
- */
-
-/*
- * @Author: wangyihan
- */
-
-/*
- * @Author: wangyihan
- */
-
-/*
- * @Author: wangyihan
- */
-
-/*
- * @Author: wangyihan
- */
 
 package club.tabstudio.gridmanagementsystem.service.impl;
 
 import club.tabstudio.gridmanagementsystem.mapper.EventsMapper;
 import club.tabstudio.gridmanagementsystem.model.Events;
-import club.tabstudio.gridmanagementsystem.model.UserEasy;
+import club.tabstudio.gridmanagementsystem.model.User;
 import club.tabstudio.gridmanagementsystem.request.EventsQueryRequest;
 import club.tabstudio.gridmanagementsystem.service.IEventsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,7 +73,7 @@ public class EventsServiceImpl implements IEventsService {
     }
 
     @Override
-    public List<UserEasy> selectEventDescAndCreatedAtByEventUserId(EventsQueryRequest eventsQueryRequest) {
+    public List<Events> selectEventDescAndCreatedAtByEventUserId(EventsQueryRequest eventsQueryRequest) {
         return eventsMapper.selectEventDescAndCreatedAtByEventUserId(eventsQueryRequest);
     }
 

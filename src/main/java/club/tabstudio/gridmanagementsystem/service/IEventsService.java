@@ -9,6 +9,7 @@
 package club.tabstudio.gridmanagementsystem.service;
 
 import club.tabstudio.gridmanagementsystem.model.Events;
+import club.tabstudio.gridmanagementsystem.model.User;
 import club.tabstudio.gridmanagementsystem.model.UserEasy;
 import club.tabstudio.gridmanagementsystem.request.EventsQueryRequest;
 import org.apache.ibatis.annotations.Param;
@@ -116,7 +117,7 @@ public interface IEventsService {
      * @param eventsQueryRequest 报事信息
      * @return 返回事件描述和事件建立时间
      */
-    List<UserEasy> selectEventDescAndCreatedAtByEventUserId(EventsQueryRequest eventsQueryRequest);
+    List<Events> selectEventDescAndCreatedAtByEventUserId(EventsQueryRequest eventsQueryRequest);
 
     /**
      * 通过事件Id和网格员ID删除
