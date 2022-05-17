@@ -35,8 +35,11 @@ public class Events {
     private String eventId;
 
     @NotBlank(message = "eventAreaId字段不能为空！", groups = {CreateGroup.class})
+    @Null(message = "无法被修改",groups = {EditGroup.class})
     private String eventAreaId;
 
+
+    @Null(message = "无法被修改",groups = {EditGroup.class})
     private GridArea gridArea;
 
     @NotBlank(message = "eventAreaAdminId字段不能为空！", groups = {CreateGroup.class})
@@ -44,16 +47,21 @@ public class Events {
 
     private User areaAdmin;
 
+    @Null(message = "创建时不能传入eventAreaAdminFeedback字段！", groups = {CreateGroup.class})
     private String eventAreaAdminFeedback;
 
     @NotBlank(message = "eventDesc字段不能为空！", groups = {CreateGroup.class})
+    @Null(message = "无法被修改",groups = {EditGroup.class})
     private String eventDesc;
 
+    @Null(message = "无法被修改",groups = {EditGroup.class})
     private String eventPosition;
 
+    @Null(message = "无法被修改",groups = {EditGroup.class})
     private String eventAddress;
 
-    @NotBlank(message = "eventUserId字段不能为空！", groups = {EditGroup.class, CreateGroup.class})
+    @NotBlank(message = "eventUserId字段不能为空！", groups = {CreateGroup.class})
+    @Null(message = "无法被修改",groups = {EditGroup.class})
     private String eventUserId;
 
     private User user;
@@ -68,12 +76,15 @@ public class Events {
     private Integer eventStatus;
 
     @Null(message = "createdAt非法提交", groups = {CreateGroup.class,EditGroup.class})
+    @Null(message = "无法被修改",groups = {EditGroup.class})
     private Date createdAt;
 
     @Null(message = "acceptedAt非法提交", groups = {CreateGroup.class,EditGroup.class})
+    @Null(message = "无法被修改",groups = {EditGroup.class})
     private Date acceptedAt;
 
     @Null(message = "completedAt非法提交", groups = {CreateGroup.class,EditGroup.class})
+    @Null(message = "无法被修改",groups = {EditGroup.class})
     private Date completedAt;
 
 

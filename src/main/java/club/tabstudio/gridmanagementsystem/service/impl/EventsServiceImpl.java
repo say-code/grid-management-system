@@ -101,6 +101,21 @@ public class EventsServiceImpl implements IEventsService {
     }
 
     @Override
+    public int deleteByEventIdAndEventAreaAdminId(String eventId, String eventAreaAdminId) {
+        return eventsMapper.deleteByEventIdAndEventAreaAdminId(eventId,eventAreaAdminId);
+    }
+
+    @Override
+    public int deleteByEventIdAndEventUserId(String eventId, String eventUserId) {
+        return eventsMapper.deleteByEventIdAndEventUserId(eventId, eventUserId);
+    }
+
+    @Override
+    public int updateByEventIdAndEventAreaAdminId(Events updated, String eventId, String eventAreaAdminId) {
+        return eventsMapper.updateByEventIdAndEventAreaAdminId(updated,eventId,eventAreaAdminId);
+    }
+
+    @Override
     public List<Events> selectWithAllRelation(EventsQueryRequest events) {
         return eventsMapper.selectWithAllRelation(events);
     }

@@ -2,7 +2,11 @@ package club.tabstudio.gridmanagementsystem.mapper;
 
 import club.tabstudio.gridmanagementsystem.model.Events;
 import club.tabstudio.gridmanagementsystem.model.UserEasy;
-import club.tabstudio.gridmanagementsystem.request.EventsQueryRequest;import org.apache.ibatis.annotations.Param;import java.util.Date;import java.util.List;
+import club.tabstudio.gridmanagementsystem.request.EventsQueryRequest;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.Date;
+import java.util.List;
 
 public interface EventsMapper {
     int deleteByPrimaryKey(String eventId);
@@ -19,7 +23,8 @@ public interface EventsMapper {
 
     /**
      * 简单查询
-     * @param eventUserId 用户Id
+     *
+     * @param eventsQueryRequest 用户信息
      * @return 返回事件描述和事件建立时间
      */
     List<UserEasy> selectEventDescAndCreatedAtByEventUserId(EventsQueryRequest eventsQueryRequest);
@@ -80,4 +85,36 @@ public interface EventsMapper {
 //    List<EventsQueryRequest> selectAllWithOthersSelective(EventsQueryRequest events);
 
     List<Events> selectWithAllRelation(EventsQueryRequest events);
+
+    /**
+     * 通过事件Id和网格员ID删除
+     *
+     * @param eventId          事件Id
+     * @param eventAreaAdminId 网格员Id
+     * @return 是否删除成功
+     */
+    int deleteByEventIdAndEventAreaAdminId(@Param("eventId") String eventId, @Param("eventAreaAdminId") String eventAreaAdminId);
+
+    /**
+     * 通过事件Id和用户Id删除
+     *
+     * @param eventId     用户Id
+     * @param eventUserId 事件Id
+     * @return 是否删除成功
+     */
+    int deleteByEventIdAndEventUserId(@Param("eventId") String eventId, @Param("eventUserId") String eventUserId);
+
+
+    /**
+     * 通过事件Id和网格员Id修改
+     * @param updated 报事事项
+     * @param eventId 事件Id
+     * @param eventAreaAdminId 网格员Id
+     * @return 是否修改成功
+     */
+    int updateByEventIdAndEventAreaAdminId(@Param("updated")Events updated,@Param("eventId")String eventId,@Param("eventAreaAdminId")String eventAreaAdminId);
+
+
+
+
 }

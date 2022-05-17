@@ -33,8 +33,9 @@ public class EventsController {
     /* -------- insert 插入模块 --------*/
 
     /**
-     *  插入新的报事事项
-     *  createdAt 参数自动创建，无需传入
+     * 插入新的报事事项
+     * 权限：网格长、网格员、用户
+     * createdAt 参数自动创建，无需传入
      * @param events 报事事项
      * @return Response响应状态
      */
@@ -53,18 +54,19 @@ public class EventsController {
 
     /**
      * 修改报事事项
-     * @param events 报事事项
+     * 权限：网格长
+     * @param events 事项信息 属性：
+     *               String eventId 事件Id 【必要】
+     *               String eventAreaAdminId 网格员Id
+     *               String eventAreaAdminFeedback 网格员反馈
+     *               String eventStatus 事件状态
      * @return Response响应状态
      */
     @PostMapping("edit")
+    @PreAuthorize("hasAuthority('event:edit')")
     public Response editEvents(@Validated({EditGroup.class}) @RequestBody Events events) {
         Integer eventStatus = events.getEventStatus();
-        if (eventStatus == 1 && events.getAcceptedAt() == null){
-            Date date = new Date(System.currentTimeMillis());
-            events.setAcceptedAt(date);
-            return Response.success(eventsService.updateByPrimaryKeySelective(events));
-        }
-        else if (eventStatus == 1){
+        if (eventStatus == 1){
             return Response.success(eventsService.updateByPrimaryKeySelective(events));
         }
         else if(eventStatus == 2 || eventStatus == 3){
@@ -73,7 +75,94 @@ public class EventsController {
             return Response.success(eventsService.updateByPrimaryKeySelective(events));
         }
         else {
-            return Response.error("eventStatus值应在0-2之间！");
+            return Response.error("eventStatus值应在1-3之间！");
+        }
+    }
+
+    /**
+     * 管理员查看报事时触发
+     * 权限：网格员
+     *
+     * @param events 事项信息
+     *               String eventId 事件Id 【必要】
+     *               int eventStatus 0 【必要】
+     *               其他参数将被忽略！
+     * @return Response响应状态
+     */
+    @PostMapping("eventsAccept")
+    @PreAuthorize("hasAuthority('event:edit:admin')")
+    public Response eventsAcceptForAdmin(@Validated({EditGroup.class}) @RequestBody Events events) {
+        Integer eventStatus = events.getEventStatus();
+        if (eventStatus == 1){
+            return Response.error("该事项已被接收！");
+        }
+        else if (eventStatus != 0){
+            return Response.error("该事项已结束！");
+        }
+        String adminId = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        Events eventsNull = new Events();
+        eventsNull.setEventStatus(1);
+        return Response.success(eventsService.updateByEventIdAndEventAreaAdminId(eventsNull,events.getEventId(), adminId));
+    }
+
+    /**
+     * 修改报事事项
+     * 权限：网格员
+     * @param events 事项信息
+     *               String eventId 事件Id 【必要】
+     *               String eventAreaAdminFeedback 网格员反馈
+     *               String eventStatus 事件状态
+     *               其他参数将被忽略！
+     * @return Response响应状态
+     */
+    @PostMapping("editForAdmin")
+    @PreAuthorize("hasAuthority('event:edit:admin')")
+    public Response editEventsForAdmin(@Validated({EditGroup.class}) @RequestBody Events events) {
+        Integer eventStatus = events.getEventStatus();
+        String adminId = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        events.setEventAreaAdminId(adminId);
+        if (eventStatus == 1){
+            return Response.success(eventsService.updateByPrimaryKeySelective(events));
+        }
+        else if(eventStatus == 2 || eventStatus == 3){
+            Date date = new Date(System.currentTimeMillis());
+            Events eventsNull = new Events();
+            eventsNull.setEventId(events.getEventId());
+            eventsNull.setEventStatus(events.getEventStatus());
+            eventsNull.setCompletedAt(date);
+            return Response.success(eventsService.updateByPrimaryKeySelective(eventsNull));
+        }
+        else {
+            return Response.error("eventStatus值应在1-3之间！");
+        }
+    }
+
+    /**
+     * 修改报事事项
+     * 权限：用户
+     * @param events 事项信息
+     *               String eventId 事件Id 【必要】
+     *               String eventUserEvaluation 用户评价
+     *               Integer eventStatus 事件状态 2或3
+     *               String eventUserScore 用户评分 0-1
+     *               其他参数将被忽略！
+     * @return Response响应状态
+     */
+    @PostMapping("editForUser")
+    @PreAuthorize("hasAuthority('event:edit:user')")
+    public Response editEventsForUser(@Validated({EditGroup.class}) @RequestBody Events events) {
+        Integer eventStatus = events.getEventStatus();
+        String adminId = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        events.setEventAreaAdminId(adminId);
+        if(eventStatus == 2 || eventStatus == 3){
+            Events eventsNull = new Events();
+            eventsNull.setEventId(events.getEventId());
+            eventsNull.setEventUserEvaluation(events.getEventUserEvaluation());
+            eventsNull.setEventUserScore(events.getEventUserScore());
+            return Response.success(eventsService.updateByPrimaryKeySelective(eventsNull));
+        }
+        else {
+            return Response.error("eventStatus值应在2-3之间！");
         }
     }
 
@@ -142,7 +231,7 @@ public class EventsController {
      * @return 报事事项数组
      */
     @PostMapping("queryEasyForUser")
-    @PreAuthorize("hasAuthority('event:query:admin')")
+    @PreAuthorize("hasAuthority('event:query:user')")
     public Response queryAllForUserSimple(@RequestBody EventsQueryRequest events){
         String userId = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
         events.setEventUserId(userId);
@@ -156,13 +245,47 @@ public class EventsController {
 
     /**
      * 根据事件Id删除
-     * @param events 事件Id
+     * 权限：网格长
+     * @param events 事项信息
+     *               String eventId 事件Id 【必要】
+     *               其他参数将被忽略！
      * @return Response响应状态
      */
     @PostMapping("delete")
     @PreAuthorize("hasAuthority('event:delete')")
     public Response deleteByEventId(@Validated({DeleteGroup.class})@RequestBody Events events){
         return Response.success(eventsService.deleteByPrimaryKey(events.getEventId()));
+    }
+
+    /**
+     * 根据事件Id删除
+     * 权限：网格员
+     * @param events 事项信息
+     *               String eventId 事件Id【必要】
+     *               其他参数将被忽略！
+     * @return Response响应状态
+     */
+    @PostMapping("deleteForAdmin")
+    @PreAuthorize("hasAuthority('event:delete:admin')")
+    public Response deleteByEventIdForAdmin(@Validated({DeleteGroup.class})@RequestBody Events events){
+        String adminId = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        events.setEventAreaAdminId(adminId);
+        return Response.success(eventsService.deleteByEventIdAndEventAreaAdminId(events.getEventId(),events.getEventAreaAdminId()));
+    }
+
+    /**
+     * 根据事件Id删除
+     * 权限：用户
+     * @param events 事项信息
+     *               String eventId 事件Id【必要】
+     * @return Response响应状态
+     */
+    @PostMapping("deleteForUser")
+    @PreAuthorize("hasAuthority('event:delete:user')")
+    public Response deleteByEventIdForUser(@Validated({DeleteGroup.class})@RequestBody Events events){
+        String userId = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        events.setEventUserId(userId);
+        return Response.success(eventsService.deleteByEventIdAndEventUserId(events.getEventId(),events.getEventUserId()));
     }
 
 }

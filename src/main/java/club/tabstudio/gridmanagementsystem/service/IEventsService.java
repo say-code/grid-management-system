@@ -118,6 +118,31 @@ public interface IEventsService {
      */
     List<UserEasy> selectEventDescAndCreatedAtByEventUserId(EventsQueryRequest eventsQueryRequest);
 
+    /**
+     * 通过事件Id和网格员ID删除
+     * @param eventId 事件Id
+     * @param eventAreaAdminId 网格员Id
+     * @return 是否删除成功
+     */
+    int deleteByEventIdAndEventAreaAdminId(@Param("eventId")String eventId,@Param("eventAreaAdminId")String eventAreaAdminId);
+
+    /**
+     * 通过事件Id和用户Id删除
+     * @param eventId 用户Id
+     * @param eventUserId 事件Id
+     * @return 是否删除成功
+     */
+    int deleteByEventIdAndEventUserId(@Param("eventId")String eventId,@Param("eventUserId")String eventUserId);
+
+    /**
+     * 通过事件Id和网格员Id修改
+     * @param updated 报事事项
+     * @param eventId 事件Id
+     * @param eventAreaAdminId 网格员Id
+     * @return 是否修改成功
+     */
+    int updateByEventIdAndEventAreaAdminId(@Param("updated")Events updated,@Param("eventId")String eventId,@Param("eventAreaAdminId")String eventAreaAdminId);
+
 
 
 }
