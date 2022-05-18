@@ -26,9 +26,12 @@ public interface EventsMapper {
      */
     Events selectByPrimaryKey(String eventId);
 
+    /**
+     * 根据事件Id修改报事
+     * @param record 事件Id以及其他希望修改得代码
+     * @return 是否更新成功
+     */
     int updateByPrimaryKeySelective(Events record);
-
-    int updateByPrimaryKey(Events record);
 
     /**
      * 简单查询
@@ -91,8 +94,6 @@ public interface EventsMapper {
      * @param events 报事事项筛选参数
      * @return 返回包含 event所有信息 网格区域名 网格员姓名 报事用户姓名的数组
      */
-//    List<EventsQueryRequest> selectAllWithOthersSelective(EventsQueryRequest events);
-
     List<Events> selectWithAllRelation(EventsQueryRequest events);
 
     /**

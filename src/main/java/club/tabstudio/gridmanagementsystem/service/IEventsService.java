@@ -24,50 +24,6 @@ import java.util.List;
 public interface IEventsService {
 
     /**
-     * 查询所有事件
-     * @return 事件数组
-     */
-    List<Events> selectAllEvents();
-
-    /**
-     * 修改事件
-     * @param events 事件
-     */
-    void editEvents(Events events);
-
-
-    /**
-     * 通过区域Id查找事件
-     * @param eventAreaId 网格区域Id
-     * @return 事件数组
-     */
-    List<Events> selectByEventAreaId(String eventAreaId);
-
-    /**
-     * 根据网格员姓名查找报事事项
-     *
-     * @param name 网格员姓名
-     * @return 报事事项数组
-     */
-    List<Events> selectEventByName(String name);
-
-
-    /**
-     * 根据网格员Id来查找报事事项
-     *
-     * @param eventAreaAdminId 网格员Id
-     * @return 报事事项数组
-     */
-    List<Events> selectAllByEventAreaAdminId(@Param("eventAreaAdminId")String eventAreaAdminId);
-
-    /**
-     * 根据年月来查找报事事项
-     * @param time 时间
-     * @return 报事事项数组
-     */
-    List<Events> selectByTime(@Param("time") Date time);
-
-    /**
      *  根据eventId查找报事事项
      *
      * @param eventId 报事Id
@@ -78,14 +34,14 @@ public interface IEventsService {
     /**
      *  插入新的报事事项
      * @param record 报事事项具体信息
-     * @return 待研究
+     * @return 是否插入成功
      */
     int insertSelective(Events record);
 
     /**
      * 根据eventId 更新数据
      * @param record 报事事项具体信息
-     * @return 待研究
+     * @return 是否更新成功
      */
     int updateByPrimaryKeySelective(Events record);
 
@@ -118,22 +74,6 @@ public interface IEventsService {
      * @return 返回事件描述和事件建立时间
      */
     List<Events> selectEventDescAndCreatedAtByEventUserId(EventsQueryRequest eventsQueryRequest);
-
-    /**
-     * 通过事件Id和网格员ID删除
-     * @param eventId 事件Id
-     * @param eventAreaAdminId 网格员Id
-     * @return 是否删除成功
-     */
-    int deleteByEventIdAndEventAreaAdminId(@Param("eventId")String eventId,@Param("eventAreaAdminId")String eventAreaAdminId);
-
-    /**
-     * 通过事件Id和用户Id删除
-     * @param eventId 用户Id
-     * @param eventUserId 事件Id
-     * @return 是否删除成功
-     */
-    int deleteByEventIdAndEventUserId(@Param("eventId")String eventId,@Param("eventUserId")String eventUserId);
 
     /**
      * 通过事件Id和网格员Id修改

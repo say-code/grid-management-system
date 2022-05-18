@@ -231,7 +231,7 @@ public class EventsController {
      * 包含报事事项
      * 权限：用户
      * @param events 用于查找的报事事项
-     * @return 报事事项数组
+     * @return Response响应状态
      */
     @GetMapping("queryEasyForUser")
     @PreAuthorize("hasAuthority('event:query')")
@@ -248,7 +248,7 @@ public class EventsController {
 
     /**
      * 根据事件Id删除
-     * 权限：网格长
+     * 权限：管理员 网格员 用户
      * @param events 事项信息
      *               String eventId 事件Id 【必要】
      *               其他参数将被忽略！
@@ -289,37 +289,4 @@ public class EventsController {
         }
 
     }
-
-    /**
-     * 根据事件Id删除
-     * 权限：网格员
-     * @param events 事项信息
-     *               String eventId 事件Id【必要】
-     *               其他参数将被忽略！
-     * @return Response响应状态
-     */
-    @PostMapping("deleteForAdmin")
-    @PreAuthorize("hasAuthority('event:delete:admin')")
-    public Response deleteByEventIdForAdmin(@Validated({DeleteGroup.class})@RequestBody Events events){
-        String adminId = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
-        events.setEventAreaAdminId(adminId);
-        return Response.success(eventsService.deleteByEventIdAndEventAreaAdminId(events.getEventId(),events.getEventAreaAdminId()));
-    }
-
-    /**
-     * 根据事件Id删除
-     * 权限：用户
-     * @param events 事项信息
-     *               String eventId 事件Id【必要】
-     *               其他参数将被忽略！
-     * @return Response响应状态
-     */
-    @PostMapping("deleteForUser")
-    @PreAuthorize("hasAuthority('event:delete:user')")
-    public Response deleteByEventIdForUser(@Validated({DeleteGroup.class})@RequestBody Events events){
-        String userId = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
-        events.setEventUserId(userId);
-        return Response.success(eventsService.deleteByEventIdAndEventUserId(events.getEventId(),events.getEventUserId()));
-    }
-
 }
