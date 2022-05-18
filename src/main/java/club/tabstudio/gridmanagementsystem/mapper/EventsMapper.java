@@ -1,8 +1,6 @@
 package club.tabstudio.gridmanagementsystem.mapper;
 
 import club.tabstudio.gridmanagementsystem.model.Events;
-import club.tabstudio.gridmanagementsystem.model.User;
-import club.tabstudio.gridmanagementsystem.model.UserEasy;
 import club.tabstudio.gridmanagementsystem.request.EventsQueryRequest;
 import org.apache.ibatis.annotations.Param;
 

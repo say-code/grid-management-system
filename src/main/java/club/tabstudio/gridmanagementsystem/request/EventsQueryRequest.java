@@ -12,6 +12,7 @@ import club.tabstudio.gridmanagementsystem.model.Events;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.PastOrPresent;
 import java.text.ParseException;
@@ -29,9 +30,10 @@ import java.util.Date;
 public class EventsQueryRequest extends Events {
 
     @PastOrPresent
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startTime;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endTime;
 
 }
