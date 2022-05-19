@@ -1,6 +1,7 @@
 package club.tabstudio.gridmanagementsystem.mapper;
 
 import club.tabstudio.gridmanagementsystem.model.Events;
+import club.tabstudio.gridmanagementsystem.request.EventImageRequest;
 import club.tabstudio.gridmanagementsystem.request.EventsQueryRequest;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,7 +16,7 @@ public interface EventsMapper {
 
     int insert(Events record);
 
-    int insertSelective(Events record);
+    int insertSelective(EventImageRequest record);
 
     /**
      * 根据事件Id查询

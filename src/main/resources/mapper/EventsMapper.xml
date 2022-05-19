@@ -273,19 +273,23 @@
     <association property="user" resultMap="club.tabstudio.gridmanagementsystem.mapper.UserMapper.JoinResultMap" />
     <association property="gridArea" resultMap="club.tabstudio.gridmanagementsystem.mapper.GridAreaMapper.JoinResultMap" />
     <association property="areaAdmin" resultMap="club.tabstudio.gridmanagementsystem.mapper.UserMapper.JoinResultMapToAdmin" />
+    <collection property="eventImageList" resultMap="club.tabstudio.gridmanagementsystem.mapper.EventImageMapper.JoinResultMap" />
   </resultMap>
   <select id="selectWithAllRelation" resultMap="withAllRelation">
     select<include refid="Join_Column_List" />,
     <include refid="club.tabstudio.gridmanagementsystem.mapper.GridAreaMapper.Join_Column_List" />,
     <include refid="club.tabstudio.gridmanagementsystem.mapper.UserMapper.Join_Column_List" />,
-    <include refid="club.tabstudio.gridmanagementsystem.mapper.UserMapper.Join_Admin_Column_List" />
+    <include refid="club.tabstudio.gridmanagementsystem.mapper.UserMapper.Join_Admin_Column_List" />,
+    <include refid="club.tabstudio.gridmanagementsystem.mapper.EventImageMapper.Join_EventsImage_Column_List">
+    </include>
     from events
     left join grid_area on grid_area.area_id = events.event_area_id
     left join users on users.user_id = events.event_user_id
     left join users as admin on admin.user_id = events.event_area_admin_id
+    left join event_image ei on events.event_id = ei.event_id
     <where>
       <if test="eventId != null">
-        and event_id = #{eventId,jdbcType=VARCHAR}
+        and events.event_id = #{eventId,jdbcType=VARCHAR}
       </if>
       <if test="eventAreaId != null">
         and event_area_id = #{eventAreaId,jdbcType=VARCHAR}

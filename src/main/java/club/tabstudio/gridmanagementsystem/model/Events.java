@@ -6,6 +6,7 @@
 package club.tabstudio.gridmanagementsystem.model;
 
 import java.util.Date;
+import java.util.List;
 
 import club.tabstudio.gridmanagementsystem.validation.groups.CreateGroup;
 import club.tabstudio.gridmanagementsystem.validation.groups.DeleteGroup;
@@ -86,6 +87,8 @@ public class Events {
     @Null(message = "非法提交！", groups = {CreateGroup.class,EditGroup.class})
     @Null(message = "无法被修改",groups = {EditGroup.class})
     private Date completedAt;
+
+    private List<EventImage> eventImageList;
 
 
 

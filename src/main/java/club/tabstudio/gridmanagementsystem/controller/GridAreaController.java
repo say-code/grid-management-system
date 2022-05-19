@@ -1,6 +1,7 @@
 package club.tabstudio.gridmanagementsystem.controller;
 
 import club.tabstudio.gridmanagementsystem.model.GridArea;
+import club.tabstudio.gridmanagementsystem.model.Response;
 import club.tabstudio.gridmanagementsystem.service.IGridAreaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,8 @@ public class GridAreaController {
      * @return 网格信息数组
      */
     @GetMapping("queryAll")
-    public List<GridArea> queryAll(){
-        return gridAreaService.selectAll();
+    public Response queryAll(){
+        return Response.success(gridAreaService.selectAll());
     }
 
     /**
@@ -38,10 +39,10 @@ public class GridAreaController {
      * @return 1表示插入成功
      */
     @PostMapping("insert")
-    public int insert(@RequestBody GridArea gridArea){
+    public Response insert(@RequestBody GridArea gridArea){
         gridArea.setAreaId(UUID.randomUUID().toString());
         gridArea.setCreatedAt(new Date(System.currentTimeMillis()));
-        return gridAreaService.insertSelective(gridArea);
+        return Response.success(gridAreaService.insertSelective(gridArea));
     }
 
     /**
@@ -50,19 +51,19 @@ public class GridAreaController {
      * @return 1表示更新成功
      */
     @PostMapping("update")
-    public int update(@RequestBody GridArea gridArea){
+    public Response update(@RequestBody GridArea gridArea){
         gridArea.setUpdatedAt(new Date(System.currentTimeMillis()));
-        return  gridAreaService.updateByPrimaryKeySelective(gridArea);
+        return  Response.success(gridAreaService.updateByPrimaryKeySelective(gridArea));
     }
 
     /**
      * 根据网格区域Id删除
      * @param gridArea 传入Id即可
-     * @return
+     * @return 是否删除成功
      */
     @PostMapping("delete")
-    public int delete(@RequestBody GridArea gridArea){
-        return gridAreaService.deleteByPrimaryKey(gridArea.getAreaId());
+    public Response delete(@RequestBody GridArea gridArea){
+        return Response.success(gridAreaService.deleteByPrimaryKey(gridArea.getAreaId()));
     }
 
 

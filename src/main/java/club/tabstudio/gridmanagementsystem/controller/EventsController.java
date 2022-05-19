@@ -5,14 +5,12 @@ import club.tabstudio.gridmanagementsystem.model.Events;
 import club.tabstudio.gridmanagementsystem.model.Permission;
 import club.tabstudio.gridmanagementsystem.model.Response;
 import club.tabstudio.gridmanagementsystem.model.UserWithPermissionList;
+import club.tabstudio.gridmanagementsystem.request.EventImageRequest;
 import club.tabstudio.gridmanagementsystem.request.EventsQueryRequest;
 import club.tabstudio.gridmanagementsystem.service.IEventsService;
 import club.tabstudio.gridmanagementsystem.validation.groups.CreateGroup;
 import club.tabstudio.gridmanagementsystem.validation.groups.DeleteGroup;
 import club.tabstudio.gridmanagementsystem.validation.groups.EditGroup;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.annotation.JsonView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * 报事事项 控制层
@@ -48,9 +45,8 @@ public class EventsController {
      */
     @PostMapping("insert")
     @PreAuthorize("hasAuthority('event:create')")
-    public Response insert(@Validated({CreateGroup.class}) @RequestBody Events events){
+    public Response insert(@Validated({CreateGroup.class}) @RequestBody EventImageRequest events){
         events.setEventStatus(0);
-        events.setEventId(UUID.randomUUID().toString());
         if (eventsService.insertSelective(events) > 0) {
             return Response.success();
         }
@@ -83,7 +79,6 @@ public class EventsController {
      * @return Response响应状态
      */
     @PostMapping("edit")
-    @PreAuthorize("hasAuthority('event:edit')")
     public Response editEvents(@Validated({EditGroup.class}) @RequestBody Events events) {
 
         //获取权限名字列表
@@ -109,13 +104,15 @@ public class EventsController {
             eventsParam.setEventPosition(events.getEventPosition());
             eventsParam.setEventAddress(events.getEventAddress());
             eventsParam.setEventAreaAdminFeedback(events.getEventAreaAdminFeedback());
+            eventsParam.setEventUserEvaluation(events.getEventUserEvaluation());
+            eventsParam.setEventUserScore(events.getEventUserScore());
         }else if (permissionNameList.contains("event:edit:grid")){
             if (!authorId.equals(events.getEventAreaAdminId())){
                 return Response.error("您没有权限修改！");
             }
             eventsParam.setEventAreaAdminFeedback(events.getEventAreaAdminFeedback());
         }else if (permissionNameList.contains("event:edit")){
-            if (!authorId.equals(events.getEventUserId())){
+            if (!authorId.equals(events.getEventAreaAdminId())){
                 return Response.error("您没有权限修改！");
             }
             eventsParam.setEventUserEvaluation(events.getEventUserEvaluation());
@@ -128,7 +125,7 @@ public class EventsController {
         Events trulyEvents = eventsService.selectByPrimaryKey(events.getEventId());
         //查看事件状态
         Integer trulyEventsStatus = trulyEvents.getEventStatus();
-        //事件完成后，只允许用户修改评价和评分
+        //事件完成后，不允许网格员修改评价和评分
         if ((trulyEventsStatus == 2 || trulyEventsStatus == 3) &&
                 !permissionNameList.contains("event:edit") &&
                 (trulyEvents.getEventUserScore() != null ||
@@ -189,20 +186,17 @@ public class EventsController {
      * 联合筛选返回所有相关信息。
      * 联合查询 - 网格区域名 网格员姓名 报事用户姓名。
      * 支持筛选的参数：
-     *      String eventId 通过事件Id查询；
-     *      String eventAreaId 通过网格区域Id查询；
-     *      String eventAreaAdminId 通过网格员Id查询；
-     *      String eventUserId 通过报事用户Id查询；
-     *      String startTime 通过时间区间查询 必须和endTime联合使用
-     *      String endTime 通过时间区间查询 必须和startTime联合使用。
-     *      注意：返回的数据格式为 yyyy-MM-dd！
-     * @param events 报事事项筛选参数
+     *      String eventId 通过事件Id查询
+     * @param eventId 报事事项筛选参数
      * @return 返回包含 报事事项所有信息 网格员所有信息 报事人所有信息 网格区域所有信息
      */
     @GetMapping("queryAllByPara")
-    @PreAuthorize("hasAuthority('event:query')")
-    public Response queryAllByPara(EventsQueryRequest events){
-
+    public Response queryAllByPara(@RequestParam("eventId") String eventId){
+        if (eventId == null){
+            return Response.error("缺少关键字段！");
+        }
+        EventsQueryRequest events = new EventsQueryRequest();
+        events.setEventId(eventId);
         //获取权限名字列表
         List<Permission> permissionList = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getPermissionList();
         List<String> permissionNameList = new ArrayList<>();
@@ -258,7 +252,6 @@ public class EventsController {
      * @return Response响应状态
      */
     @PostMapping("delete")
-    @PreAuthorize("hasAuthority('event:delete')")
     public Response deleteByEventId(@Validated({DeleteGroup.class})@RequestBody Events events){
         //根据传入事件Id从数据库获取相应数据
         Events trulyEvents = eventsService.selectByPrimaryKey(events.getEventId());
@@ -286,7 +279,8 @@ public class EventsController {
             if (!authorId.equals(trulyEvents.getEventUserId())){
                 return Response.error("您没有权限!");
             }
-            return Response.success(eventsService.deleteByPrimaryKey(events.getEventId()));
+            eventsService.deleteByPrimaryKey(events.getEventId());
+            return Response.success();
         }else {
             return Response.error("您没有权限!");
         }

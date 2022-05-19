@@ -9,12 +9,10 @@
 package club.tabstudio.gridmanagementsystem.service;
 
 import club.tabstudio.gridmanagementsystem.model.Events;
-import club.tabstudio.gridmanagementsystem.model.User;
-import club.tabstudio.gridmanagementsystem.model.UserEasy;
+import club.tabstudio.gridmanagementsystem.request.EventImageRequest;
 import club.tabstudio.gridmanagementsystem.request.EventsQueryRequest;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,7 +34,7 @@ public interface IEventsService {
      * @param record 报事事项具体信息
      * @return 是否插入成功
      */
-    int insertSelective(Events record);
+    int insertSelective(EventImageRequest record);
 
     /**
      * 根据eventId 更新数据
