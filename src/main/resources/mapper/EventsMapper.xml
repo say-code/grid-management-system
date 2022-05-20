@@ -55,7 +55,7 @@
       #{eventUserScore,jdbcType=DOUBLE}, #{eventStatus,jdbcType=INTEGER}, #{createdAt,jdbcType=TIMESTAMP}, 
       #{acceptedAt,jdbcType=TIMESTAMP}, #{completedAt,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="club.tabstudio.gridmanagementsystem.model.Events">
+  <insert id="insertSelective" parameterType="club.tabstudio.gridmanagementsystem.request.EventImageRequest">
     <!--@mbg.generated-->
     insert into events
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -303,7 +303,7 @@
       <if test="eventStatus != null">
         and event_status = #{eventStatus,jdbcType=INTEGER}
       </if>
-      <if test="createdAt != null ">
+      <if test="startTime != null ">
         and YEAR(events.created_at) between YEAR(#{startTime,jdbcType=TIMESTAMP}) and YEAR(#{endTime,jdbcType=TIMESTAMP})
         and MONTH(events.created_at) between MONTH(#{startTime,jdbcType=TIMESTAMP}) and MONTH(#{endTime,jdbcType=TIMESTAMP})
         and DAYOFMONTH(events.created_at) between DAYOFMONTH(#{startTime,jdbcType=TIMESTAMP}) and DAYOFMONTH(#{endTime,jdbcType=TIMESTAMP})
@@ -328,11 +328,13 @@
     <if test="eventAreaAdminId != null">
       and event_area_admin_id = #{eventAreaAdminId,jdbcType=VARCHAR}
     </if>
+      <if test="eventUserId!= null">
       and event_user_id = #{eventUserId,jdbcType=VARCHAR}
+      </if>
     <if test="eventStatus != null">
       and event_status = #{eventStatus,jdbcType=INTEGER}
     </if>
-    <if test="createdAt != null ">
+    <if test="startTime != null ">
     and YEAR(events.created_at) between YEAR(#{startTime,jdbcType=TIMESTAMP}) and YEAR(#{endTime,jdbcType=TIMESTAMP})
     and MONTH(events.created_at) between MONTH(#{startTime,jdbcType=TIMESTAMP}) and MONTH(#{endTime,jdbcType=TIMESTAMP})
     and DAYOFMONTH(events.created_at) between DAYOFMONTH(#{startTime,jdbcType=TIMESTAMP}) and DAYOFMONTH(#{endTime,jdbcType=TIMESTAMP})</if>

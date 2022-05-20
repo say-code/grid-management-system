@@ -6,11 +6,13 @@ import club.tabstudio.gridmanagementsystem.mapper.EventsMapper;
 import club.tabstudio.gridmanagementsystem.model.Events;
 import club.tabstudio.gridmanagementsystem.model.EventImage;
 import club.tabstudio.gridmanagementsystem.model.Response;
+import club.tabstudio.gridmanagementsystem.model.UserWithPermissionList;
 import club.tabstudio.gridmanagementsystem.request.EventImageRequest;
 import club.tabstudio.gridmanagementsystem.request.EventsQueryRequest;
 import club.tabstudio.gridmanagementsystem.service.IEventsService;
 import com.sun.java.accessibility.util.EventID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,9 +42,12 @@ public class EventsServiceImpl implements IEventsService {
     @Override
     public int insertSelective(EventImageRequest events) {
         events.setEventId(UUID.randomUUID().toString());
+        String authorId = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        events.setEventUserId(authorId);
         if (events.getEventImageIdList() != null){
             List<String> eventImageIdList= events.getEventImageIdList();
             eventImageMapper.updateBatchByImageId(events.getEventId(),eventImageIdList);
+
         }
         return eventsMapper.insertSelective(events);
     }

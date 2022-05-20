@@ -43,7 +43,6 @@ public class Events {
     @Null(message = "无法被修改",groups = {EditGroup.class})
     private GridArea gridArea;
 
-    @NotBlank(message = "缺少关键字段！", groups = {CreateGroup.class})
     private String eventAreaAdminId;
 
     private User areaAdmin;
@@ -61,7 +60,6 @@ public class Events {
 //    @Null(message = "无法被修改",groups = {EditGroup.class})
     private String eventAddress;
 
-    @NotBlank(message = "缺少关键字段！！", groups = {CreateGroup.class})
     @Null(message = "无法被修改",groups = {EditGroup.class})
     private String eventUserId;
 

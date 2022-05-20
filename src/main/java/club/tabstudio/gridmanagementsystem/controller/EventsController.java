@@ -79,7 +79,7 @@ public class EventsController {
      * @return Response响应状态
      */
     @PostMapping("edit")
-    public Response editEvents(@Validated({EditGroup.class}) @RequestBody Events events) {
+    public Response editEvents(@Validated({EditGroup.class}) @RequestBody Events events)    {
 
         //获取权限名字列表
         List<Permission> permissionList = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getPermissionList();
@@ -107,16 +107,10 @@ public class EventsController {
             eventsParam.setEventUserEvaluation(events.getEventUserEvaluation());
             eventsParam.setEventUserScore(events.getEventUserScore());
         }else if (permissionNameList.contains("event:edit:grid")){
-            if (!authorId.equals(events.getEventAreaAdminId())){
-                return Response.error("您没有权限修改！");
-            }
             eventsParam.setEventAreaAdminFeedback(events.getEventAreaAdminFeedback());
         }else if (permissionNameList.contains("event:edit")){
-            if (!authorId.equals(events.getEventAreaAdminId())){
-                return Response.error("您没有权限修改！");
-            }
             eventsParam.setEventUserEvaluation(events.getEventUserEvaluation());
-            eventsParam.setEventUserScore(events.getEventUserScore());
+//            eventsParam.setEventUserScore(events.getEventUserScore());
         }else {
             return Response.error("您没有权限修改！");
         }
@@ -216,6 +210,7 @@ public class EventsController {
         }else if (permissionNameList.contains("event:query")){
             events.setEventUserId(authorId);
             return Response.success(eventsService.selectWithAllRelation(events));
+
         }else {
             return Response.error("权限不足！");
         }
@@ -226,16 +221,36 @@ public class EventsController {
      * 查找报事事项
      * 【简略信息】
      * 包含报事事项
-     * 权限：用户
+     * 权限：用户 网格员 管理员
+     *  String eventId 通过事件Id查询；
+     *      String eventAreaId 通过网格区域Id查询；
+     *      String eventAreaAdminId 通过网格员Id查询；
+     *      String eventUserId 通过报事用户Id查询；
+     *      String startTime 通过时间区间查询 必须和endTime联合使用
+     *      String endTime 通过时间区间查询 必须和startTime联合使用。
+     *      注意：返回的数据格式为 yyyy-MM-dd！
      * @param events 用于查找的报事事项
      * @return Response响应状态
      */
-    @GetMapping("queryEasyForUser")
-    @PreAuthorize("hasAuthority('event:query')")
+    @GetMapping("easyQuery")
     public Response queryAllForUserSimple(EventsQueryRequest events){
-        String userId = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
-        events.setEventUserId(userId);
-        return Response.success(eventsService.selectEventDescAndCreatedAtByEventUserId(events));
+        String authorId = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
+        List<Permission> permissionList = ((UserWithPermissionList) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getPermissionList();
+        List<String> permissionNameList = new ArrayList<>();
+        for (Permission permission : permissionList) {
+            permissionNameList.add(permission.getPermissionName());
+        }
+        if (permissionNameList.contains("event:query:admin")){
+            return Response.success(eventsService.selectEventDescAndCreatedAtByEventUserId(events));
+        }else if(permissionNameList.contains("event:query:grid")){
+            events.setEventAreaAdminId(authorId);
+            return Response.success(eventsService.selectEventDescAndCreatedAtByEventUserId(events));
+        }else if (permissionNameList.contains("event:query")){
+            events.setEventUserId(authorId);
+            return Response.success(eventsService.selectEventDescAndCreatedAtByEventUserId(events));
+        }else {
+            return Response.error("权限不足！");
+        }
     }
 
 
